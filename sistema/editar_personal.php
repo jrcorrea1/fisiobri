@@ -98,6 +98,7 @@ if ($result_sql == 0) {
     $cargo = $data['cargo'];
     $pais = $data['pais'];
     $departamento = $data['departamento'];
+
     $ciudad = $data['ciudad'];
     $barrio = $data['barrio'];
     $direccion = $data['direccion'];
@@ -208,17 +209,13 @@ if ($result_sql == 0) {
                    $resultado_departamento = mysqli_num_rows($query_departamento);
                    //mysqli_close($conexion);
                    ?>
-                  <select id="departamento" name="departamento" class="form-control">
-                    <?php
-                     if ($resultado_departamento > 0) {
-                       while ($departamento = mysqli_fetch_array($query_departamento)) {
-                         // code...
-                     ?>
-                        <option value="<?php echo $departamento['departamento']; ?>"><?php echo $departamento['departamento']; ?></option>
-                    <?php
-                       }
-                     }
-                     ?>
+              
+                  <select class="form-control seleccion" id="departamento" name="departamento">
+                    <option value="">--- Seleccionar rol ---</option>
+                    <?php foreach ($query_departamento as $dep) {
+                      $selected = ($dep['departamento'] == $departamento) ? "selected" : null;
+                      echo '<option value="' . $dep['departamento'] . '" ' . $selected . '>' . $dep['departamento'] . '</option>';
+                    } ?>
                   </select>
               </div>
               <div class="form-group col-md-5">

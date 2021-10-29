@@ -104,7 +104,7 @@
     padding-right: 50px;
 ">
                                 <div class="card bg-primary text-white mb-4">
-                                  <img class="card-img-top" src="IMG/boxes.png">
+                                  <img class="card-img-top" src="img/boxes.png">
                                     <div class="card-footer d-flex align-items-center justify-content-between">
                                         <a href="lista_productos.php" class="btn btn-primary stretched-link">Productos</a>
                                         <div class="small text-white"><i class="fas fa-angle-right"></i></div>
@@ -116,7 +116,7 @@
     padding-right: 50px;
 ">
                                 <div class="card bg-warning text-white mb-4">
-                                  <img class="card-img-top" src="IMG/personal.png">
+                                  <img class="card-img-top" src="img/personal.png">
                                   <div class="card-footer d-flex align-items-center justify-content-between">
                                     <a href="lista_personal.php" class="btn btn-primary stretched-link">Personal</a>
                                         <div class="small text-white"><i class="fas fa-angle-right"></i></div>
@@ -128,7 +128,7 @@
     padding-right: 50px;
 ">
                                 <div class="card bg-success text-white mb-4">
-                                  <img class="card-img-top" src="IMG/cliente.png">
+                                  <img class="card-img-top" src="img/cliente.png">
                                     <div class="card-footer d-flex align-items-center justify-content-between">
                                       <a href="lista_cliente.php" class="btn btn-primary stretched-link">Clientes</a>
                                         <div class="small text-white"><i class="fas fa-angle-right"></i></div>
@@ -140,7 +140,7 @@
     padding-right: 50px;
 ">
                                 <div class="card bg-danger text-white mb-4">
-                                  <img class="card-img-top" src="IMG/fisio.png">
+                                  <img class="card-img-top" src="img/fisio.png">
                                     <div class="card-footer d-flex align-items-center justify-content-between">
                                       <a href="#" class="btn btn-primary stretched-link">Citas Medicas</a>
                                         <div class="small text-white"><i class="fas fa-angle-right"></i></div>
