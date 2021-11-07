@@ -17,6 +17,7 @@ if ($_SESSION['idUser']) {
   $request = $_REQUEST;
   $recordsTotal = 0;
   $recordsFiltered = 0;
+  $pedido = $_GET['pedido'];
  
   
   // session variables
@@ -25,7 +26,11 @@ if ($_SESSION['idUser']) {
 
   /****** BEGIN - FOR PAGINATION ******/
   // GET TOTAL
-  $sql_total = "SELECT count(*) as total FROM producto WHERE 1=1";
+  $sql_total = "SELECT count(*) as total FROM detalle_pedido WHERE 1=1";
+
+  if(!empty($pedido)){
+    $sql_total .= " AND id_pedido=$pedido";
+  }
 
   
   
@@ -37,9 +42,13 @@ if ($_SESSION['idUser']) {
   /****** FINISH - FOR PAGINATION ******/
 
   /****** BEGIN - TABLE RECORDS AND FILTERING ******/
-  $sql = "SELECT codproducto, descripcion, precio, marca, categoria  from producto WHERE 1=1";
+  $sql = "SELECT dp.id_pedido, dp.id_producto, p.descripcion, p.marca, p.precio, dp.cantidad
+  from detalle_pedido dp inner join producto p on dp.id_producto = p.codproducto 
+   WHERE 1=1";
   
-  
+  if(!empty($pedido)){
+    $sql .= " AND id_pedido= $pedido";
+  }
  
   // LIMIT
   if(isset($request['start'])){
@@ -63,13 +72,17 @@ if ($_SESSION['idUser']) {
     foreach ($productos as $producto) {
         // SETTING UP COLUMNS FOR TABLE
         $row = array();
+
+        $total = $producto['precio'] * $producto['cantidad'];
        
         
-        $row['codproducto'] = $producto['codproducto'];       
+        $row['codigo'] = $producto['id_producto'];  
+        $row['id_pedido'] = $producto['id_pedido'];       
         $row['descripcion'] = $producto['descripcion'];
-        $row['precio'] = $producto['precio'];       
-        $row['marca'] = $producto['marca'];
-        $row['categoria'] = $producto['categoria'];  
+        $row['cantidad'] = $producto['cantidad'];  
+        $row['precio'] = $producto['precio'];   
+        $row['total'] = $total;       
+        $row['marca'] = $producto['marca'];       
       //  var_dump($row);      
         array_push($data, $row);      
     }

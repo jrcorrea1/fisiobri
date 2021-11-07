@@ -49,6 +49,8 @@ if ($result_data > 0) {
 	<!-- Custom styles for this template-->
 	<link href="css/sb-admin-2.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="css/dataTables.bootstrap4.min.css">
+	<link href="css/select2.min.css" rel="stylesheet" />
+	<link href="css/sweetalert.css" rel="stylesheet">
 
 </head>
 

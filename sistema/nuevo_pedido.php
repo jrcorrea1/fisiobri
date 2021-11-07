@@ -2,13 +2,15 @@
 include('core/config.php');
 $dbconn = getConnection();
 // usuario
-$stmt = $dbconn->query('SELECT IFNULL(MAX(id_pedido), 0)+1 AS numero FROM pedido_compra');
-$pedido = $stmt->fetch(PDO::FETCH_ASSOC); 
+$stmt = $dbconn->query('SELECT IFNULL(MAX(id), 0)+1 AS numero FROM pedido_compra');
+$pedido = $stmt->fetch(PDO::FETCH_ASSOC);
 
 // dia_semana
 $stmt3 = $dbconn->query('SELECT codproveedor, proveedor FROM proveedor');
-$proveedor = $stmt3->fetchAll(PDO::FETCH_ASSOC);?>
-
+$proveedor = $stmt3->fetchAll(PDO::FETCH_ASSOC);
+$fechaingreso = date('Y-m-d H:i:s');
+$fecha = date("d/m/Y", strtotime($fechaingreso));
+?>
 <!-- Begin Page Content -->
 <div class="container">
   <div class="card o-hidden border-0 shadow-lg my-6">
@@ -22,22 +24,36 @@ $proveedor = $stmt3->fetchAll(PDO::FETCH_ASSOC);?>
             <div class="text-center">
               <h1 class="h4 text-gray-900 mb-3">Nuevo Pedido</h1>
             </div>
-            <form id="form" class="user">
+            <form id="form_pedido" class="user">
+              <div class="card-header py-3">
+                <div class="float-left">
+
+
+                </div>
+                <div class="float-right">
+
+                  <button class="btn btn-primary" id="cancelar" type="button">Cancelar</button>
+                  <input type="hidden" name="accion" value="insertapedido">
+                  <button class="btn btn-primary" id="guardar" type="submit">Guardar</button>
+                </div>
+              </div>
+              <br>
+
               <br>
               <h1 class="h4 text-gray-900 mb-4">Datos del Pedido</h1>
               <div class="form-group row mb-3">
                 <div class="col-sm-4">
                   <label>Nro. Pedido</label>
-                  <input type="text" class="form-control form-control-user" value="<?= $pedido['numero']; ?>" readonly>
+                  <input type="text" id="pedido" class="form-control" value="<?= $pedido['numero']; ?>" readonly>
                 </div>
                 <div class="col-sm-4">
                   <label>Usuario</label>
-                  <input type="text" class="form-control form-control-user" readonly>
+                  <input type="text" class="form-control" value="<?= $_SESSION['nombre']; ?>" readonly>
                 </div>
                 <div class="col-sm-4">
                   <label>Fecha</label>
                   <div class="input-group date datepicker">
-                    <input type="text" class="form-control" required name="vped_fecha" disabled="" />
+                    <input type="text" class="form-control" value="<?= $fecha; ?>" required name="vped_fecha" disabled="" />
                     <span class="input-group-addon btn btn-primary">
                       <i class="fa fa-calendar"></i>
                     </span>
@@ -47,88 +63,61 @@ $proveedor = $stmt3->fetchAll(PDO::FETCH_ASSOC);?>
               <div class="form-group row mb-3">
                 <div class="col-sm-4">
                   <label>Proveedor</label>
-                  <select class="form-control select2bs4" style="width: 100%;" id="codproveedor" name="codproveedor">
-                                    <option value="">--- Seleccionar dia ---</option>
-                                    <?php foreach ($proveedor as $provedor) {
-                                        // $selected = ($departamento['coddpto'] == $paciente['coddpto']) ? "selected" : null;
-                                        echo '<option value="' . $provedor['codproveedor'] . '" ' . $selected . '>' . $provedor['proveedor'] . '</option>';
-                                    } ?>
-                                </select>       </div>
-                <div class="col-sm-4">
-                  <label>Metodo de Pago</label>
-                  <input type="text" class="form-control form-control-user" readonly>
+                  <select class="form-control seleccion" style="width: 100%;" id="codproveedor" name="codproveedor">
+                    <option value="">--- Seleccionar ---</option>
+                    <?php foreach ($proveedor as $provedor) {
+                      echo '<option value="' . $provedor['codproveedor'] . '" ' . $selected . '>' . $provedor['proveedor'] . '</option>';
+                    } ?>
+                  </select>
                 </div>
                 <div class="col-sm-4">
                   <label>Sucursal</label>
-                  <div class="input-group date datepicker">
-                    <input type="text" class="form-control" required name="vped_fecha" disabled="" />
-                    <span class="input-group-addon btn btn-primary">
-                      <i class="fa fa-calendar"></i>
-                    </span>
-                  </div>
+                  <select class="form-control seleccion" style="width: 100%;" id="sucursal_id" name="sucursal_id">
+                    <option value="">--- Seleccionar ---</option>
+                    <option value="1">--- Sucursal 1 ---</option>
+                    <option value="2">--- Sucursal 1 ---</option>
+
+                  </select>
                 </div>
+
               </div>
 
 
-              <div class="col-md-12">
-                <div class="pull-right">
+            </form>
+
+
+
+            <div class="card shadow mb-12">
+              <div class="card-header py-3">
+                <div class="float-left">
+                  <h6 class="m-0 font-weight-bold text-primary"></h6>
+                </div>
+                <div class="float-right">
                   <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">
                     <span class="glyphicon glyphicon-plus"></span> Agregar productos
                   </button>
-                  <button type="submit" class="btn btn-default">
-                    <span class="glyphicon glyphicon-print"></span> Imprimir
-                  </button>
                 </div>
               </div>
-              Modificar
-              </button>
-            </form>
-            <div class="form-group row mb-6">
-              <div class="card shadow mb-6">
-                <div class="card-header py-3">
-                  <div class="float-left">
-                    <h6 class="m-0 font-weight-bold text-primary">Horarios</h6>
-                  </div>
-                  <div class="float-right">
-                    <button class="btn btn-primary" data-toggle="modal" data-target="#modal-datos">Agregar Horario</button>
-                  </div>
-                </div>
-                <div class="card-body" style="font-size: 13px">
-                  <div class="table-responsive">
-                    <table id="listado" class="table table-bordered" width="100%" cellspacing="0">
-                      <thead>
-                        <tr>
-                          <th>Dia</th>
-                          <th>Turno</th>
-                          <th>Horario - Inicio</th>
-                          <th>Horario - Fin</th>
-                          <th>Cupos</th>
-                          <th>Tiempo</th>
-                          <th>Capacidad</th>
-                          <?php if (isset($_SESSION['permiso_test']) and $_SESSION['permiso_test'] == "SI") { ?>
-                            <th>Accion</th>
-                          <?php } ?>
-                        </tr>
-                      </thead>
-                      <tfoot>
-                        <tr>
-                          <th>Dia</th>
-                          <th>Turno</th>
-                          <th>Horario - Inicio</th>
-                          <th>Horario - Fin</th>
-                          <th>Cupos</th>
-                          <th>Tiempo</th>
-                          <th>Capacidad</th>
-                          <?php if (isset($_SESSION['permiso_test']) and $_SESSION['permiso_test'] == "SI") { ?>
-                            <th>Accion</th>
-                          <?php } ?>
-                        </tr>
-                      </tfoot>
-                    </table>
-                  </div>
+              <div class="card-body" style="font-size: 13px">
+                <div class="table-responsive">
+                  <table id="listado" class="table table-striped table-bordered" width="100%" cellspacing="0">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th>Codigo</th>
+                        <th style=" white-space: nowrap;">Descripcion</th>
+                        <th>Marca</th>
+                        <th>Cantidad</th>
+                        <th><span class="pull-right">PRECIO UNIT.</span></th>
+                        <th><span class="pull-right">PRECIO TOTAL</span></th>
+                        <th>Accion</th>
+                      </tr>
+                    </thead>
+                  </table>
+
                 </div>
               </div>
             </div>
+
 
 
 
@@ -142,10 +131,54 @@ $proveedor = $stmt3->fetchAll(PDO::FETCH_ASSOC);?>
   </div>
 </div>
 
+<div class="modal fade bs-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <form id="form" class="user">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="myModalLabel">Buscar productos</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+
+          <div class="card-body" style="font-size: 14px">
+            <div class="table-responsive">
+              <table id="listaproducto" class="table table-bordered" width="100%" cellspacing="0">
+                <thead class="thead-dark">
+                  <tr>
+                    <th>ID</th>
+                    <th style=" white-space: nowrap;">Nombre</th>
+                    <th>Precio</th>
+                    <th>Marca</th>
+                    <th>Categoria</th>
+                    <th>Cantidad</th>
+                    <th><span class="pull-right">Accion</span></th>
+                  </tr>
+                </thead>
+
+              </table>
+            </div>
+          </div>
+
+          <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+
+
+      </div>
+    </form>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
 
 
 
-<!-- End of Main Content -->
+
 
 
 <?php include_once "includes/footer.php"; ?>
@@ -153,9 +186,7 @@ $proveedor = $stmt3->fetchAll(PDO::FETCH_ASSOC);?>
 <script type="text/javascript">
   $(document).ready(function() {
 
-    modificar = function(usuario) {
-      location.href = './modificarUsuario.php?usuario=' + usuario;
-    }
+
 
     function handleAjaxError(xhr, textStatus, error) {
       if (textStatus === 'timeout') {
@@ -167,32 +198,147 @@ $proveedor = $stmt3->fetchAll(PDO::FETCH_ASSOC);?>
       }
     }
 
-    $('#listado').DataTable({
+
+
+
+    var table = $('#listaproducto').DataTable({
       "processing": true,
       "serverSide": true,
-      "searching": false,
+      "ordering": false,
       "ajax": {
-        url: "./backend/listados/apertura.php",
+        url: "./backend/listados/producto.php",
         timeout: 10000,
         error: handleAjaxError
       },
       "columns": [{
-          "data": "id"
+          "data": "codproducto"
+        },
+        {
+          "data": "descripcion"
+        },
+        {
+          "data": "precio"
+        },
+        {
+          "data": "marca"
+        },
+        {
+          "data": "categoria"
+        },
+        {
+          "data": "codproducto"
+        }
+
+        // last column of table
+      ],
+      "columnDefs": [{
+          "render": function(number_row, type, row) {
+            return "<input id='cantidad_" + row.codproducto + "'  class='form-control' type='number'/>";
+          },
+          "orderable": false,
+          "targets": 5 // columna HORARIO - INICIO
+        },
+        {
+          "render": function(number_row, type, row) {
+            return '<button class="btn btn-success btn-user" ' +
+              'onclick="insertadetalle(' + row.codproducto + ');"><i class="fa fa-shopping-cart"></i></button>';
+          },
+          "orderable": false,
+          "targets": 6 // columna modificar usuario
+        }
+      ],
+      "language": {
+        "decimal": "",
+        "emptyTable": "No hay registros en la tabla",
+        "info": "Se muestran _START_ a _END_ de _TOTAL_ registros",
+        "infoEmpty": "Se muestran 0 a 0 de 0 registros",
+        "infoFiltered": "(filtrado de _MAX_ registros totales)",
+        "infoPostFix": "",
+        "thousands": ",",
+        "lengthMenu": "Mostrar _MENU_ registros",
+        "loadingRecords": "Cargando...",
+        "processing": "Procesando...",
+        "search": "Filtar por (Nombre):",
+        "zeroRecords": "No se encontraron registros que coincidan",
+        "paginate": {
+          "first": "Primero",
+          "last": "Último",
+          "next": "Siguiente",
+          "previous": "Anterior"
+        },
+        "aria": {
+          "sortAscending": ": activar para ordenar la columna ascendente",
+          "sortDescending": ": activar para ordenar la columna descendente"
+        }
+      }
+    });
+    insertadetalle = function(codproducto) {
+      event.preventDefault();
+
+
+      datos = {
+        "accion": "insertadetalle",
+        "pedido": $('#pedido').val(),
+        "producto": codproducto,
+        "cantidad": $('#cantidad_' + codproducto).val()
+      };
+      console.log(datos);
+
+      $.ajax({
+        url: './backend/pedido.php',
+        method: 'POST',
+        data: datos,
+        success: function(data) {
+          try {
+            response = JSON.parse(data);
+
+            if (response.status == "success") {
+
+              location.reload();
+
+            } else {
+              swal("Advertencia", "Ocurrio un error intentado resolver la solicitud. Por favor contacte con el administrador del sistema", "warning");
+            }
+          } catch (error) {
+            swal("Advertencia", "Ocurrio un error intentado resolver la solicitud. Por favor contacte con el administrador del sistema", "warning");
+          }
+        },
+        error: function(data) {
+          swal("Advertencia", "Ocurrio un error intentado comunicarse con el servidor. Por favor contacte con el administrador de la red", "warning");
+        }
+      });
+    };
+
+    var table = $('#listado').DataTable({
+      "processing": true,
+      "serverSide": true,
+      "ordering": false,
+      "searching": false,
+      "ajax": {
+        "url": "./backend/listados/detallepedido.php",
+        timeout: 15000,
+        error: handleAjaxError,
+        "data": function(data) {
+          data.pedido = $('#pedido').val()
+        }
+      },
+      "columns": [{
+          "data": "codigo"
         }, // first column of table
         {
-          "data": "fecha_apertura"
+          "data": "descripcion"
         },
         {
-          "data": "monto_apertura"
+          "data": "marca"
         },
         {
-          "data": "fecha_cierre"
+          "data": "cantidad"
         },
         {
-          "data": "monto_cierre"
+          "data": "precio"
         },
         {
-          "data": "estado"
+          "data": "total"
         },
         {
           "data": "id"
@@ -201,7 +347,7 @@ $proveedor = $stmt3->fetchAll(PDO::FETCH_ASSOC);?>
       "columnDefs": [{
         "render": function(number_row, type, row) {
           return '<button class="btn btn-warning btn-user btn-block" ' +
-            'onclick="modificar(' + row.id + ');">Modificar</button>';
+            'onclick="eliminar(' + row.id_pedido + ',' + row.codigo + ');">Quitar</button>';
         },
         "orderable": false,
         "targets": 6 // columna modificar usuario
@@ -229,6 +375,125 @@ $proveedor = $stmt3->fetchAll(PDO::FETCH_ASSOC);?>
           "sortAscending": ": activar para ordenar la columna ascendente",
           "sortDescending": ": activar para ordenar la columna descendente"
         }
+      }
+    });
+    eliminar = function(pedido, codigo) {
+      event.preventDefault();
+      datos = {
+        "accion": "eliminadetalle",
+        "pedido": $('#cantidad_' + codproducto).val(),
+        "producto": codigo
+      };
+
+
+      $.ajax({
+        url: './backend/pedido.php',
+        method: 'POST',
+        data: datos,
+        success: function(data) {
+          try {
+            response = JSON.parse(data);
+
+            if (response.status == "success") {
+
+              location.reload();
+
+            } else {
+              swal("Advertencia", "Ocurrio un error intentado resolver la solicitud. Por favor contacte con el administrador del sistema", "warning");
+            }
+          } catch (error) {
+            swal("Advertencia", "Ocurrio un error intentado resolver la solicitud. Por favor contacte con el administrador del sistema", "warning");
+          }
+        },
+        error: function(data) {
+          swal("Advertencia", "Ocurrio un error intentado comunicarse con el servidor. Por favor contacte con el administrador de la red", "warning");
+        }
+      });
+    };
+
+    $("#cancelar").on("click", function(event) {
+      event.preventDefault();
+      datos = {
+        "accion": "eliminadetalle",
+        "pedido": $('#pedido').val(),
+        "pedido": $('#pedido').val(),
+        "pedido": $('#pedido').val()
+      };
+    });
+
+    $('#form_pedido').submit(function(e) {
+      e.preventDefault();
+      $('#success').hide();
+      $('#error').hide();
+      $('#warning').hide();
+      if ($('#codproveedor').val() == "") {
+        Swal(
+          "Advertencia",
+          "Favor cargar el proveedor",
+          "warning"
+        );
+      } else {
+        $('#guardar').attr("disabled", "disabled");
+        const valor = $('#form_pedido').val();
+        console.log($('#form_pedido').val());
+        $.ajax({
+          url: './backend/pedido.php',
+          method: 'POST',
+          data: $('#form_pedido').serialize(),
+          success: function(data) {
+            try {
+              response = JSON.parse(data);
+              if (response.status == "success") {
+                swal({
+                    title: "Exito",
+                    text: "Pedido guardado con exito",
+                    type: "success",
+                    confirmButtonText: "Ok",
+                    closeOnConfirm: false
+                  },
+                  function() {
+                    location.href = './pedido_compra.php';
+                  });
+
+
+              } else if (response.status == "error" && response.message == "No autorizado") {
+                Swal({
+                    title: "Sesión ha expirado",
+                    text: "Su sesión ha expirado, favor vuelva a iniciar sesión en el sistema.",
+                    type: "warning",
+                    confirmButtonText: "Ok",
+                    closeOnConfirm: false
+                  },
+                  function() {
+                    location.href = './index.php';
+                  });
+              } else {
+                $('#error_message').html(response.message);
+                $('#error').show();
+                $('#guardar').removeAttr("disabled");
+              }
+            } catch (error) {
+
+              Swal({
+                title: 'Advertencia!',
+                text: 'Ocurrio un error intentado resolver la solicitud. Por favor contacte con el administrador del sistema',
+                icon: 'warning',
+                confirmButtonText: 'OK'
+              });
+              console.log(error);
+
+            }
+          },
+          error: function(error) {
+            Swal({
+              title: 'Advertencia!',
+              text: 'Ocurrio un error intentado comunicarse con el servidor. Por favor contacte con el administrador de la red',
+              icon: 'error',
+              confirmButtonText: 'OK'
+            });
+            console.log(error);
+          }
+        });
       }
     });
 
