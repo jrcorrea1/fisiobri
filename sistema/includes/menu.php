@@ -54,7 +54,7 @@
 		</a>
 		<div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionSidebar">
 			<div class="bg-white py-2 collapse-inner rounded">
-				<a class="collapse-item" href="#"><i class="fas fa-plus-circle" style="margin-right: 5px"></i>Pedidos de Compras</a>
+				<a class="collapse-item" href="pedido_compra.php"><i class="fas fa-plus-circle" style="margin-right: 5px"></i>Pedidos de Compras</a>
 				<a class="collapse-item" href="#"><i class="fab fa-shopify"style="margin-right: 5px"></i>Compras</a>
 				<a class="collapse-item" href="#"><i class="fas fa-dolly"style="margin-right: 5px"></i>Devoluciones</a>
 			</div>

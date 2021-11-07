@@ -26,8 +26,7 @@
 						require "../conexion.php";
 						$query = mysqli_query($conexion, "SELECT f.nofactura, f.fecha, CONCAT(c.nombre, c.apellido) AS nombre, f.totalfactura, f.estado FROM factura as f inner join cliente as c ON f.codcliente = c.idcliente ORDER BY f.nofactura DESC");
 						mysqli_close($conexion);
-						$cli = mysqli_num_rows($query);
-						var_dump($cli);
+						$cli = mysqli_num_rows($query);					
 
 						if ($cli > 0) {
 							while ($dato = mysqli_fetch_array($query)) {
@@ -52,10 +51,7 @@
 
 
 
-</div>
-<!-- /.container-fluid -->
 
-</div>
 <!-- End of Main Content -->
 
 
