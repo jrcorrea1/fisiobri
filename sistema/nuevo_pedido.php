@@ -444,29 +444,29 @@ $fecha = date("d/m/Y", strtotime($fechaingreso));
             try {
               response = JSON.parse(data);
               if (response.status == "success") {
-                swal({
-                    title: "Exito",
-                    text: "Pedido guardado con exito",
-                    type: "success",
-                    confirmButtonText: "Ok",
-                    closeOnConfirm: false
-                  },
-                  function() {
-                    location.href = './pedido_compra.php';
-                  });
+
+                setTimeout(function() {
+                  swal({
+                      title: "Exito",
+                      text: "Pedido guardado con exito",
+                      type: "success",
+                      confirmButtonText: "Ok",
+                      closeOnConfirm: false
+                    },
+                    function() {
+                      location.href = './pedido_compra.php';
+                    });
+                }, 2000);
 
 
               } else if (response.status == "error" && response.message == "No autorizado") {
                 Swal({
-                    title: "Sesión ha expirado",
-                    text: "Su sesión ha expirado, favor vuelva a iniciar sesión en el sistema.",
-                    type: "warning",
-                    confirmButtonText: "Ok",
-                    closeOnConfirm: false
-                  },
-                  function() {
-                    location.href = './index.php';
-                  });
+                  title: "Sesión ha expirado",
+                  text: "Su sesión ha expirado, favor vuelva a iniciar sesión en el sistema.",
+                  type: "warning",
+                  confirmButtonText: "Ok",
+                  closeOnConfirm: false
+                });
               } else {
                 $('#error_message').html(response.message);
                 $('#error').show();
@@ -495,6 +495,42 @@ $fecha = date("d/m/Y", strtotime($fechaingreso));
           }
         });
       }
+    });
+
+    $("#cancelar").on("click", function(event) {
+      event.preventDefault();
+      // resto de tu codigo
+      $.ajax({
+        url: './backend/pedido.php',
+        method: 'POST',
+        data: "accion=cancelarpedido&pedido=" + $('#pedido').val(),
+        success: function(data) {
+          try {
+            response = JSON.parse(data);
+            if (response.status == "success") {
+              setTimeout(function() {
+                swal({
+                    title: "Éxito!",
+                    text: "Se cancelado el pedido.",
+                    type: "success",
+                    confirmButtonText: "Ok",
+                    closeOnConfirm: false
+                  },
+                  function() {
+                    location.href = './pedido_compra.php';
+                  });
+              }, 2000);
+            } else {
+              swal("Advertencia", "Ocurrio un error intentado resolver la solicitud. Por favor contacte con el administrador del sistema", "warning");
+            }
+          } catch (error) {
+            swal("Advertencia", "Ocurrio un error intentado resolver la solicitud. Por favor contacte con el administrador del sistema", "warning");
+          }
+        },
+        error: function(data) {
+          swal("Advertencia", "Ocurrio un error intentado comunicarse con el servidor. Por favor contacte con el administrador de la red", "warning");
+        }
+      });
     });
 
   });

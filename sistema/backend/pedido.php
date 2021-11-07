@@ -148,6 +148,37 @@ if ($_SESSION['idUser']) {
 
         $status = $result ? "success" : "error";
         print json_encode(array("status" => $status, "message" => $message));
+    } else if (isset($_POST['accion']) and $_POST['accion'] == "cancelarpedido") {
+        $result = 0;
+        $pedido = $_POST['pedido'];      
+
+
+
+
+
+        try {
+            // start transaction
+            $dbconn->beginTransaction();
+            // entonces borramos los sitios anteriores guardados
+            $sql = 'DELETE FROM  detalle_pedido 
+            WHERE id_pedido = :id_pedido';
+            $stmt = $dbconn->prepare($sql);
+            $stmt->bindValue(":id_pedido", $pedido);         
+            $result = $stmt->execute();
+            // commit transaction
+            $dbconn->commit();
+        } catch (Exception $e) {
+            $result = FALSE;
+            // rollback transaction
+            $dbconn->rollBack();
+            var_dump($e->getMessage());
+        }
+
+        $message = $result ? "se borro" : "Ocurrio un error intentado resolver la solicitud, " .
+            "por favor complete todos los campos o recargue de vuelta la pagina";
+
+        $status = $result ? "success" : "error";
+        print json_encode(array("status" => $status, "message" => $message));
     } else // FORM NOT SENT
     {
         print json_encode(array("status" => "error", "message" => "Formulario no enviado"));
