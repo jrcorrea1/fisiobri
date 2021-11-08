@@ -24,23 +24,21 @@
         <table id="listado" class="table table-striped table-bordered">
           <thead class="thead-dark">
             <tr>
-              <th>ID</th>
-              <th>Fecha Apertura</th>
-              <th>Monto Apertura</th>
-              <th>Fecha Cierre</th>
-              <th>Monto Cierre</th>
-              <th>Estado</th>
+              <th>Codigo</th>
+              <th>Fecha</th>
+              <th>Proveedor</th>
+              <th>Sucursal</th>
+              <th>Usuario</th>
               <th>Acciones</th>
             </tr>
           </thead>
           <tfoot class="thead-dark">
             <tr>
-              <th>ID</th>
-              <th>Fecha Apertura</th>
-              <th>Monto Apertura</th>
-              <th>Fecha Cierre</th>
-              <th>Monto Cierre</th>
-              <th>Estado</th>
+              <th>Codigo</th>
+              <th>Fecha</th>
+              <th>Proveedor</th>
+              <th>Sucursal</th>
+              <th>Usuario</th>
               <th>Acciones</th>
             </tr>
           </tfoot>
@@ -61,8 +59,8 @@
 <script type="text/javascript">
   $(document).ready(function() {
 
-    modificar = function(usuario) {
-      location.href = './modificarUsuario.php?usuario=' + usuario;
+    modificar = function(pedido) {
+      location.href = './modificarPedido.php?pedido=' + pedido;
     }
 
     function handleAjaxError(xhr, textStatus, error) {
@@ -80,7 +78,7 @@
       "serverSide": true,
       "searching": false,
       "ajax": {
-        url: "./backend/listados/apertura.php",
+        url: "./backend/listados/pedido.php",
         timeout: 10000,
         error: handleAjaxError
       },
@@ -88,19 +86,16 @@
           "data": "id"
         }, // first column of table
         {
-          "data": "fecha_apertura"
+          "data": "fecha"
         },
         {
-          "data": "monto_apertura"
+          "data": "proveedor"
         },
         {
-          "data": "fecha_cierre"
+          "data": "sucursal"
         },
         {
-          "data": "monto_cierre"
-        },
-        {
-          "data": "estado"
+          "data": "usuario"
         },
         {
           "data": "id"
@@ -112,7 +107,7 @@
             'onclick="modificar(' + row.id + ');">Modificar</button>';
         },
         "orderable": false,
-        "targets": 6 // columna modificar usuario
+        "targets": 5 // columna modificar usuario
       }],
       "language": {
         "decimal": "",

@@ -55,17 +55,17 @@ if ($_SESSION['idUser']) {
   }
   // EXECUTE QUERY
   $stmt = $dbconn->query($sql);
-  $calls = $stmt->fetchAll(PDO::FETCH_ASSOC);
+  $productos = $stmt->fetchAll(PDO::FETCH_ASSOC);
   $data = array();
   /****** FINISH - TABLE RECORDS AND FILTERING ******/
 
-  if ($calls == FALSE) {
+  if ($productos == FALSE) {
     // RESULT FALSE
     $result = FALSE;
   } else {
     // RESULT TRUE
     $result = TRUE;
-    foreach ($calls as $producto) {
+    foreach ($productos as $producto) {
       // SETTING UP COLUMNS FOR TABLE
       $row = array();
 

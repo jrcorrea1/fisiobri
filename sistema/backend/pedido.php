@@ -60,50 +60,48 @@ if ($_SESSION['idUser']) {
         try {
 
             $stmt2 = $dbconn->prepare('SELECT * FROM detalle_pedido WHERE id_pedido = :id_pedido AND id_producto = :id_producto');
-            $stmt2->bindParam(':id_pedido', $pedido);
-            $stmt2->bindParam(':id_producto', $producto);
+            $stmt2->bindValue(':id_pedido', $pedido);
+            $stmt2->bindValue(':id_producto', $producto);
             $stmt2->execute();
 
             $detallepedido = $stmt2->fetch(PDO::FETCH_ASSOC);
-
-            if ($detallepedido['id_producto'] == $producto) {
-                $cantidad = $detallepedido['cantidad'] + $cantidad;
-                $stmt = $dbconn->prepare("UPDATE detalle_pedido SET cantidad = :cantidad 
-                    WHERE id_pedido = :id_pedido AND id_producto = :id_producto");
-                $stmt->bindValue(':id_pedido', $pedido);
-                $stmt->bindValue(':id_producto', $producto);
-                $stmt->bindValue(':cantidad', $cantidad);
-                $result = $stmt->execute();
+            $codproducto = empty($detallepedido['id_producto']) ? 0 : $detallepedido['id_producto'];
+            $cantidadpedido = empty($detallepedido['cantidad']) ? 0 : $detallepedido['cantidad'];
 
 
-
-
-                $message = $result ? "Actualizacion" : "Error" . $cedula;
-                $status = $result ? "success" : "error";
-                print json_encode(array("status" => $status, "message" => $message));
-            } else {
-
+            if ($codproducto == 0) {
                 $sql = 'INSERT INTO detalle_pedido
-                    (id_pedido, id_producto, cantidad)
-					VALUES (:id_pedido, :id_producto, :cantidad)';
+                (id_pedido, id_producto, cantidad)
+                    VALUES (:id_pedido, :id_producto, :cantidad)';
                 $stmt = $dbconn->prepare($sql);
                 // pass values to the statement
                 $stmt->bindValue(':id_pedido', $pedido);
                 $stmt->bindValue(':id_producto', $producto);
                 $stmt->bindValue(':cantidad', $cantidad);
-
-
-                // execute the insert statement
+                // execute and get number of affected rows
                 $result = $stmt->execute();
-                $message = $result ? $alerta : "Ocurrio un error intentado resolver la solicitud, " .
+                $message = $result ? "Se inserto" : "Ocurrio un error intentado resolver la solicitud, " .
+                    "por favor complete todos los campos o recargue de vuelta la pagina ";
+
+                $status = $result ? "success" : "error";
+                print json_encode(array("status" => $status, "message" => $message));
+            } else {
+
+                $cantidadpedido = $cantidadpedido + $cantidad;
+                $sql = 'UPDATE detalle_pedido SET cantidad = :cantidad WHERE id_pedido = :id_pedido AND id_producto = :id_producto';
+                $stmt = $dbconn->prepare($sql);
+                // pass values to the statement
+                $stmt->bindValue(':id_pedido', $pedido);
+                $stmt->bindValue(':id_producto', $producto);
+                $stmt->bindValue(':cantidad', $cantidadpedido);
+                // execute and get number of affected rows
+                $result = $stmt->execute();
+                $message = $result ? "Actualizo" : "Ocurrio un error intentado resolver la solicitud, " .
                     "por favor complete todos los campos o recargue de vuelta la pagina ";
 
                 $status = $result ? "success" : "error";
                 print json_encode(array("status" => $status, "message" => $message));
             }
-
-
-            // HASta qui
         } catch (Exception $e) {
             $result = FALSE;
             var_dump($e->getMessage());

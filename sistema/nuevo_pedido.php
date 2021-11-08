@@ -8,6 +8,8 @@ $pedido = $stmt->fetch(PDO::FETCH_ASSOC);
 // dia_semana
 $stmt3 = $dbconn->query('SELECT codproveedor, proveedor FROM proveedor');
 $proveedor = $stmt3->fetchAll(PDO::FETCH_ASSOC);
+$stmt4 = $dbconn->query('SELECT idsucursal, nombre FROM sucursal');
+$sucursales = $stmt4->fetchAll(PDO::FETCH_ASSOC);
 $fechaingreso = date('Y-m-d H:i:s');
 $fecha = date("d/m/Y", strtotime($fechaingreso));
 ?>
@@ -71,12 +73,12 @@ $fecha = date("d/m/Y", strtotime($fechaingreso));
                   </select>
                 </div>
                 <div class="col-sm-4">
-                  <label>Sucursal</label>
+                  <label>Sucursal</label>                 
                   <select class="form-control seleccion" style="width: 100%;" id="sucursal_id" name="sucursal_id">
                     <option value="">--- Seleccionar ---</option>
-                    <option value="1">--- Sucursal 1 ---</option>
-                    <option value="2">--- Sucursal 1 ---</option>
-
+                    <?php foreach ($sucursales as $sucursal) {
+                      echo '<option value="' . $sucursal['idsucursal'] . '" ' . $selected . '>' . $sucursal['nombre'] . '</option>';
+                    } ?>
                   </select>
                 </div>
 
@@ -196,7 +198,7 @@ $fecha = date("d/m/Y", strtotime($fechaingreso));
 
 <script type="text/javascript">
   $(document).ready(function() {
-   
+    $('.seleccion').select2();
 
 
 
@@ -452,6 +454,14 @@ $fecha = date("d/m/Y", strtotime($fechaingreso));
         swal({
           title: "Advertencia",
           text: "Favor cargar el proveedor",
+          type: "warning",
+          confirmButtonText: "Ok",
+          closeOnConfirm: false
+        });
+      } else if ($('#sucursal_id').val() == "") {
+        swal({
+          title: "Advertencia",
+          text: "Favor cargar la sucursal",
           type: "warning",
           confirmButtonText: "Ok",
           closeOnConfirm: false

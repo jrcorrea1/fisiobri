@@ -13,3 +13,9 @@ CREATE TABLE `detalle_pedido` (
   `id_producto` int(11) DEFAULT NULL,
   `cantidad` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `sucursal` (
+  `idsucursal` int(11) DEFAULT NULL,
+  `nombre` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`idsucursal`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4

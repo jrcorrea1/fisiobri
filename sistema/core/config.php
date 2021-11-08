@@ -5,7 +5,7 @@ function getConnection()
 {
     $host = "localhost";
     $dbport = "3306";
-    $database = "test1";
+    $database = "test2";
     $dbuser = "root";
     $dbpassword = "";
     $dbconn = null;
