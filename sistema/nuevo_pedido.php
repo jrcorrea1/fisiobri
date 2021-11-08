@@ -142,9 +142,20 @@ $fecha = date("d/m/Y", strtotime($fechaingreso));
           </button>
         </div>
         <div class="modal-body">
+          <div class="form-group row mb-3">
+            <div class="col-sm-8">
+              <input type="text" class="form-control" id="des" name="des" placeholder="Buscar productos">
+            </div>
+            <div class="col-sm-4">
+              <button id="filtrar" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
+            </div>
+            <div id="loading" class="col-sm-12 text-center hide" style="display: none;">
+              <i class="fa fa-spinner fa-spin"></i> Procesando consulta
+            </div>
 
+          </div>
 
-          <div class="card-body" style="font-size: 14px">
+          <div class="card-body">
             <div class="table-responsive">
               <table id="listaproducto" class="table table-bordered" width="100%" cellspacing="0">
                 <thead class="thead-dark">
@@ -185,6 +196,7 @@ $fecha = date("d/m/Y", strtotime($fechaingreso));
 
 <script type="text/javascript">
   $(document).ready(function() {
+   
 
 
 
@@ -200,15 +212,19 @@ $fecha = date("d/m/Y", strtotime($fechaingreso));
 
 
 
-
     var table = $('#listaproducto').DataTable({
       "processing": true,
       "serverSide": true,
       "ordering": false,
+      "searching": false,
+
       "ajax": {
-        url: "./backend/listados/producto.php",
-        timeout: 10000,
-        error: handleAjaxError
+        "url": "./backend/listados/producto.php",
+        timeout: 15000,
+        error: handleAjaxError,
+        "data": function(data) {
+          data.des = $('#des').val()
+        }
       },
       "columns": [{
           "data": "codproducto"
@@ -258,7 +274,7 @@ $fecha = date("d/m/Y", strtotime($fechaingreso));
         "lengthMenu": "Mostrar _MENU_ registros",
         "loadingRecords": "Cargando...",
         "processing": "Procesando...",
-        "search": "Filtar por (Nombre):",
+        "search": "Filtar por (Número | Fecha | Cédula | Depto | Distrito):",
         "zeroRecords": "No se encontraron registros que coincidan",
         "paginate": {
           "first": "Primero",
@@ -272,6 +288,18 @@ $fecha = date("d/m/Y", strtotime($fechaingreso));
         }
       }
     });
+    $('#filtrar').click(function(e) {
+      e.preventDefault();
+      $('#filtrar').attr("disabled", "disabled");
+      $("#loading").show();
+      table.ajax.reload();
+    });
+
+    table.on('draw', function() {
+      $('#filtrar').removeAttr("disabled");
+      $("#loading").hide();
+    });
+
     insertadetalle = function(codproducto) {
       event.preventDefault();
 
@@ -292,9 +320,10 @@ $fecha = date("d/m/Y", strtotime($fechaingreso));
           try {
             response = JSON.parse(data);
 
-            if (response.status == "success") {
-
-              location.reload();
+            if (response.status == "success") {            
+              $('#myModal').modal('hide');
+              table.ajax.reload();
+              table1.ajax.reload();
 
             } else {
               swal("Advertencia", "Ocurrio un error intentado resolver la solicitud. Por favor contacte con el administrador del sistema", "warning");
@@ -309,7 +338,7 @@ $fecha = date("d/m/Y", strtotime($fechaingreso));
       });
     };
 
-    var table = $('#listado').DataTable({
+    var table1 = $('#listado').DataTable({
       "processing": true,
       "serverSide": true,
       "ordering": false,
@@ -377,14 +406,15 @@ $fecha = date("d/m/Y", strtotime($fechaingreso));
         }
       }
     });
+
     eliminar = function(pedido, codigo) {
       event.preventDefault();
       datos = {
         "accion": "eliminadetalle",
-        "pedido": $('#cantidad_' + codproducto).val(),
+        "pedido": pedido,
         "producto": codigo
       };
-
+      console.log(datos);
 
       $.ajax({
         url: './backend/pedido.php',
@@ -396,7 +426,7 @@ $fecha = date("d/m/Y", strtotime($fechaingreso));
 
             if (response.status == "success") {
 
-              location.reload();
+              table1.ajax.reload();
 
             } else {
               swal("Advertencia", "Ocurrio un error intentado resolver la solicitud. Por favor contacte con el administrador del sistema", "warning");
@@ -411,15 +441,7 @@ $fecha = date("d/m/Y", strtotime($fechaingreso));
       });
     };
 
-    $("#cancelar").on("click", function(event) {
-      event.preventDefault();
-      datos = {
-        "accion": "eliminadetalle",
-        "pedido": $('#pedido').val(),
-        "pedido": $('#pedido').val(),
-        "pedido": $('#pedido').val()
-      };
-    });
+
 
     $('#form_pedido').submit(function(e) {
       e.preventDefault();
@@ -427,11 +449,13 @@ $fecha = date("d/m/Y", strtotime($fechaingreso));
       $('#error').hide();
       $('#warning').hide();
       if ($('#codproveedor').val() == "") {
-        Swal(
-          "Advertencia",
-          "Favor cargar el proveedor",
-          "warning"
-        );
+        swal({
+          title: "Advertencia",
+          text: "Favor cargar el proveedor",
+          type: "warning",
+          confirmButtonText: "Ok",
+          closeOnConfirm: false
+        });
       } else {
         $('#guardar').attr("disabled", "disabled");
         const valor = $('#form_pedido').val();
@@ -532,6 +556,8 @@ $fecha = date("d/m/Y", strtotime($fechaingreso));
         }
       });
     });
+
+
 
   });
 </script>
