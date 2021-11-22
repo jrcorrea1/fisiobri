@@ -50,6 +50,41 @@ if ($_SESSION['idUser']) {
             $result = FALSE;
             var_dump($e->getMessage());
         }
+    } else if (isset($_POST['accion']) and $_POST['accion'] == "modificapedido") {
+        $result = 0;
+        $pedido = $_POST['id'];
+        $proveedor = $_POST['codproveedor'];
+        $sucursal = $_POST['sucursal_id'];
+        $usuario_id = $_SESSION['idUser'];
+        $fecha = $_POST['vped_fecha'];
+
+        try {
+
+            $sql = 'UPDATE pedido_compra
+                    SET fecha = :fecha, proveedor_id = :proveedor_id, sucursa_id = :sucursa_id, usuario_id = :usuario_id
+                    WHERE id = :id';
+            $stmt = $dbconn->prepare($sql);
+            // pass values to the statement
+            $stmt->bindValue(':id', $pedido);
+            $stmt->bindValue(':fecha', $fecha);
+            $stmt->bindValue(':proveedor_id', $proveedor);
+            $stmt->bindValue(':sucursa_id', $sucursal);
+            $stmt->bindValue(':usuario_id', $usuario_id);
+            // execute and get number of affected rows
+            $result = $stmt->execute();
+            $message = $result ? "Se modifico" : "Ocurrio un error intentado resolver la solicitud, " .
+                "por favor complete todos los campos o recargue de vuelta la pagina ";
+
+            $status = $result ? "success" : "error";
+            print json_encode(array("status" => $status, "message" => $message));
+            
+
+
+            // HASta qui
+        } catch (Exception $e) {
+            $result = FALSE;
+            var_dump($e->getMessage());
+        }
     } else if (isset($_POST['accion']) and $_POST['accion'] == "insertadetalle") {
         $result = 0;
         $pedido = $_POST['pedido'];
@@ -148,7 +183,7 @@ if ($_SESSION['idUser']) {
         print json_encode(array("status" => $status, "message" => $message));
     } else if (isset($_POST['accion']) and $_POST['accion'] == "cancelarpedido") {
         $result = 0;
-        $pedido = $_POST['pedido'];      
+        $pedido = $_POST['pedido'];
 
 
 
@@ -161,7 +196,7 @@ if ($_SESSION['idUser']) {
             $sql = 'DELETE FROM  detalle_pedido 
             WHERE id_pedido = :id_pedido';
             $stmt = $dbconn->prepare($sql);
-            $stmt->bindValue(":id_pedido", $pedido);         
+            $stmt->bindValue(":id_pedido", $pedido);
             $result = $stmt->execute();
             // commit transaction
             $dbconn->commit();

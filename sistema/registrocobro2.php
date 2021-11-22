@@ -1,5 +1,10 @@
 <?php include_once "includes/header.php";
 include "../conexion.php";
+include('core/config.php');
+$dbconn = getConnection();
+// usuario
+$stmt = $dbconn->query('SELECT estado FROM apertura_cierre');
+$apertura = $stmt->fetch(PDO::FETCH_ASSOC);
 if (!empty($_POST)) {
   $alert = "";
   if (
@@ -56,6 +61,7 @@ if (!empty($_POST)) {
   }
   //    mysqli_close($conexion);
 }
+
 ?>
 
 <!-- Begin Page Content -->
@@ -192,21 +198,41 @@ if (!empty($_POST)) {
       <?php }
       } ?>
     </tbody>
-      <!-- End of Main Content -->
-      <?php include_once "includes/footer.php"; ?>
-      <script type="text/javascript">
-        $(document).ready(function() {
-          $('#formacobro').change(function() {
-            if ($(this).val() == 'Cheque') {
-              $('#cheque2').show();
-              $('#banco2').show();
-            } else {
-              $('#cheque2').hide();
-              $('#banco2').hide();
-            }
-
-
-
-          });
+    <!-- End of Main Content -->
+    <?php include_once "includes/footer.php"; ?>
+    <script type="text/javascript">
+      $(document).ready(function() {
+        $('#formacobro').change(function() {
+          if ($(this).val() == 'Cheque') {
+            $('#cheque2').show();
+            $('#banco2').show();
+          } else {
+            $('#cheque2').hide();
+            $('#banco2').hide();
+          }
         });
-      </script>
+
+        const estado = "<?= $apertura['estado']; ?>";
+        if (estado == 0) {
+          setTimeout(function() {
+            swal({
+                title: "Alerta",
+                text: "Debe abrir una caja antes de realizar operaciones",
+                type: "warning",               
+                confirmButtonText: "Ok",
+                  closeOnConfirm: false,
+                  closeOnClickOutside: false,
+                  closeOnEsc: false,
+                  allowOutsideClick: false,
+                  allowEscapeKey: false
+              },
+              function() {
+                location.href = './apertura-cierre.php';
+              });
+          }, 1000);
+        }
+
+
+
+      });
+    </script>

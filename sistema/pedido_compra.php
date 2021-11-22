@@ -60,7 +60,7 @@
   $(document).ready(function() {
 
     modificar = function(pedido) {
-      location.href = './modificarPedido.php?pedido=' + pedido;
+      location.href = './editar_pedido.php?pedido=' + pedido;
     }
 
     function handleAjaxError(xhr, textStatus, error) {
