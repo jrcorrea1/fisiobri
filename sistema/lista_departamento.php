@@ -1,15 +1,14 @@
 <?php include_once "includes/header.php"; ?>
 
 <!-- Begin Page Content -->
-<div class="card" style="    left: 20px;
-    right: -30;
-    right: 20px;
-    margin-right: 42px;
-    margin-bottom: 20px">
-  <div class="card-body">
-    <div align="center"><h5>Mantenimiento de Departamento</h5></div>
+<div class="card"style="left: 20px;right: -30;right: 20px;margin-right: 42px;margin-bottom: 20px">
+  <div class="card-header text-white" style="background-color: rgb(43, 167, 228);">
+    Mantenimiento de Departamentos
   </div>
-</div>
+      <div class="card"style="
+    height: 900px;
+">
+        <div class="card-body">
 
 	<!-- Page Heading -->
 	<div class="col-sm-2">

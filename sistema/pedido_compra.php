@@ -29,6 +29,7 @@
               <th>Proveedor</th>
               <th>Sucursal</th>
               <th>Usuario</th>
+              <th>Estado</th>
               <th>Acciones</th>
             </tr>
           </thead>
@@ -39,6 +40,7 @@
               <th>Proveedor</th>
               <th>Sucursal</th>
               <th>Usuario</th>
+              <th>Estado</th>
               <th>Acciones</th>
             </tr>
           </tfoot>
@@ -65,10 +67,20 @@
 
     function handleAjaxError(xhr, textStatus, error) {
       if (textStatus === 'timeout') {
-        swal("Advertencia", "Ocurrio un error intentado comunicarse con el servidor. Por favor contacte con el administrador de la red", "warning");
+        Swal.fire({
+                title: 'Advertencia',
+                text: "Ocurrio un error intentado resolver la solicitud. Por favor contacte con el administrador dela red",
+                icon: 'warning',
+                confirmButtonText: 'Ok'
+              });
         document.getElementById('listado_processing').style.display = 'none';
       } else {
-        swal("Advertencia", "Ocurrio un error intentado resolver la solicitud. Por favor contacte con el administrador del sistema", "warning");
+        Swal.fire({
+          title: 'Advertencia',
+          text: "Ocurrio un error intentado resolver la solicitud. Por favor contacte con el administrador del sistema",
+          icon: 'warning',
+          confirmButtonText: 'Ok'
+        });
         document.getElementById('listado_processing').style.display = 'none';
       }
     }
@@ -98,16 +110,24 @@
           "data": "usuario"
         },
         {
+          "data": "estado"
+        },
+        {
           "data": "id"
         } // last column of table
       ],
       "columnDefs": [{
         "render": function(number_row, type, row) {
-          return '<button class="btn btn-warning btn-user btn-block" ' +
-            'onclick="modificar(' + row.id + ');">Modificar</button>';
+   
+
+            return row.estado == 'Comprado' ? '<button class="comprado btn btn-block btn-default btn-block" ' +
+                            'onclick="javascript:void(0);" style="background-color: gray;' +
+                            'color: white; cursor:not-allowed"><i class="fas fa-edit"></i></button>' :
+                            '<button class="pendiente btn btn-block btn-warning btn-lg" ' +
+                            'onclick="modificar(' + row.id+');"><i class="fas fa-edit"></i></button>';
         },
         "orderable": false,
-        "targets": 5 // columna modificar usuario
+        "targets": 6 // columna modificar usuario
       }],
       "language": {
         "decimal": "",

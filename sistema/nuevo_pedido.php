@@ -1,15 +1,17 @@
 <?php include_once "includes/header.php";
 include('core/config.php');
 $dbconn = getConnection();
-// usuario
+// llamamos al ultimo id de la tabla pedido
 $stmt = $dbconn->query('SELECT IFNULL(MAX(id), 0)+1 AS numero FROM pedido_compra');
 $pedido = $stmt->fetch(PDO::FETCH_ASSOC);
 
-// dia_semana
+// select de la tabla proveedor
 $stmt3 = $dbconn->query('SELECT codproveedor, proveedor FROM proveedor');
 $proveedor = $stmt3->fetchAll(PDO::FETCH_ASSOC);
+// select de la tabla sucursal
 $stmt4 = $dbconn->query('SELECT idsucursal, nombre FROM sucursal');
 $sucursales = $stmt4->fetchAll(PDO::FETCH_ASSOC);
+//generamos la fecha y hora actual
 $fechaingreso = date('Y-m-d H:i:s');
 $fecha = date("d/m/Y", strtotime($fechaingreso));
 ?>
@@ -55,7 +57,7 @@ $fecha = date("d/m/Y", strtotime($fechaingreso));
                 <div class="col-sm-4">
                   <label>Fecha</label>
                   <div class="input-group date datepicker">
-                    <input type="text" class="form-control" value="<?= $fecha; ?>" required name="vped_fecha" disabled="" />
+                    <input type="text" class="form-control" value="<?= $fecha; ?>" required name="vped_fecha" readonly>
                     <span class="input-group-addon btn btn-primary">
                       <i class="fa fa-calendar"></i>
                     </span>
@@ -73,7 +75,7 @@ $fecha = date("d/m/Y", strtotime($fechaingreso));
                   </select>
                 </div>
                 <div class="col-sm-4">
-                  <label>Sucursal</label>                 
+                  <label>Sucursal</label>
                   <select class="form-control seleccion" style="width: 100%;" id="sucursal_id" name="sucursal_id">
                     <option value="">--- Seleccionar ---</option>
                     <?php foreach ($sucursales as $sucursal) {
@@ -102,7 +104,7 @@ $fecha = date("d/m/Y", strtotime($fechaingreso));
               </div>
               <div class="card-body" style="font-size: 13px">
                 <div class="table-responsive">
-                  <table id="listado" class="table table-striped table-bordered" width="100%" cellspacing="0">
+                  <table id="listado" class="table table-striped table-bordered dt-responsive nowrap" width="100%" cellspacing="0">
                     <thead class="thead-dark">
                       <tr>
                         <th>Codigo</th>
@@ -159,7 +161,7 @@ $fecha = date("d/m/Y", strtotime($fechaingreso));
 
           <div class="card-body">
             <div class="table-responsive">
-              <table id="listaproducto" class="table table-bordered" width="100%" cellspacing="0">
+              <table id="listaproducto" class="table table-striped table-bordered dt-responsive nowrap" width="100%" cellspacing="0">
                 <thead class="thead-dark">
                   <tr>
                     <th>ID</th>
@@ -204,10 +206,20 @@ $fecha = date("d/m/Y", strtotime($fechaingreso));
 
     function handleAjaxError(xhr, textStatus, error) {
       if (textStatus === 'timeout') {
-        swal("Advertencia", "Ocurrio un error intentado comunicarse con el servidor. Por favor contacte con el administrador de la red", "warning");
+        Swal.fire({
+          title: 'Advertencia',
+          text: "Ocurrio un error intentado resolver la solicitud. Por favor contacte con el administrador dela red",
+          icon: 'warning',
+          confirmButtonText: 'Ok'
+        });
         document.getElementById('listado_processing').style.display = 'none';
       } else {
-        swal("Advertencia", "Ocurrio un error intentado resolver la solicitud. Por favor contacte con el administrador del sistema", "warning");
+        Swal.fire({
+          title: 'Advertencia',
+          text: "Ocurrio un error intentado resolver la solicitud. Por favor contacte con el administrador del sistema",
+          icon: 'warning',
+          confirmButtonText: 'Ok'
+        });
         document.getElementById('listado_processing').style.display = 'none';
       }
     }
@@ -322,20 +334,35 @@ $fecha = date("d/m/Y", strtotime($fechaingreso));
           try {
             response = JSON.parse(data);
 
-            if (response.status == "success") {            
+            if (response.status == "success") {
               $('#myModal').modal('hide');
               table.ajax.reload();
               table1.ajax.reload();
 
             } else {
-              swal("Advertencia", "Ocurrio un error intentado resolver la solicitud. Por favor contacte con el administrador del sistema", "warning");
+              Swal.fire({
+                title: 'Advertencia',
+                text: "Ocurrio un error intentado resolver la solicitud. Por favor contacte con el administrador del sistema",
+                icon: 'warning',
+                confirmButtonText: 'Ok'
+              });
             }
           } catch (error) {
-            swal("Advertencia", "Ocurrio un error intentado resolver la solicitud. Por favor contacte con el administrador del sistema", "warning");
+            Swal.fire({
+              title: 'Advertencia',
+              text: "Ocurrio un error intentado resolver la solicitud. Por favor contacte con el administrador del sistema",
+              icon: 'warning',
+              confirmButtonText: 'Ok'
+            });
           }
         },
         error: function(data) {
-          swal("Advertencia", "Ocurrio un error intentado comunicarse con el servidor. Por favor contacte con el administrador de la red", "warning");
+          Swal.fire({
+            title: 'Advertencia',
+            text: "Ocurrio un error intentado resolver la solicitud. Por favor contacte con el administrador dela red",
+            icon: 'warning',
+            confirmButtonText: 'Ok'
+          });
         }
       });
     };
@@ -431,14 +458,29 @@ $fecha = date("d/m/Y", strtotime($fechaingreso));
               table1.ajax.reload();
 
             } else {
-              swal("Advertencia", "Ocurrio un error intentado resolver la solicitud. Por favor contacte con el administrador del sistema", "warning");
+              Swal.fire({
+                title: 'Advertencia',
+                text: "Ocurrio un error intentado resolver la solicitud. Por favor contacte con el administrador del sistema",
+                icon: 'warning',
+                confirmButtonText: 'Ok'
+              });
             }
           } catch (error) {
-            swal("Advertencia", "Ocurrio un error intentado resolver la solicitud. Por favor contacte con el administrador del sistema", "warning");
+            Swal.fire({
+              title: 'Advertencia',
+              text: "Ocurrio un error intentado resolver la solicitud. Por favor contacte con el administrador del sistema",
+              icon: 'warning',
+              confirmButtonText: 'Ok'
+            });
           }
         },
         error: function(data) {
-          swal("Advertencia", "Ocurrio un error intentado comunicarse con el servidor. Por favor contacte con el administrador de la red", "warning");
+          Swal.fire({
+            title: 'Advertencia',
+            text: "Ocurrio un error intentado resolver la solicitud. Por favor contacte con el administrador dela red",
+            icon: 'warning',
+            confirmButtonText: 'Ok'
+          });
         }
       });
     };
@@ -451,20 +493,17 @@ $fecha = date("d/m/Y", strtotime($fechaingreso));
       $('#error').hide();
       $('#warning').hide();
       if ($('#codproveedor').val() == "") {
-        swal({
-          title: "Advertencia",
-          text: "Favor cargar el proveedor",
-          type: "warning",
-          confirmButtonText: "Ok",
-          closeOnConfirm: false
+
+        Swal.fire({
+          title: 'Advertencia',
+          icon: 'warning',
+          text: 'Favor cargar el proveedor'
         });
       } else if ($('#sucursal_id').val() == "") {
-        swal({
-          title: "Advertencia",
-          text: "Favor cargar la sucursal",
-          type: "warning",
-          confirmButtonText: "Ok",
-          closeOnConfirm: false
+        Swal.fire({
+          title: 'Advertencia',
+          icon: 'warning',
+          text: 'Favor cargar la sucursal'
         });
       } else {
         $('#guardar').attr("disabled", "disabled");
@@ -480,26 +519,25 @@ $fecha = date("d/m/Y", strtotime($fechaingreso));
               if (response.status == "success") {
 
                 setTimeout(function() {
-                  swal({
-                      title: "Exito",
-                      text: "Pedido guardado con exito",
-                      type: "success",
-                      confirmButtonText: "Ok",
-                      closeOnConfirm: false
-                    },
-                    function() {
+                  Swal.fire({
+                    title: 'Exito',
+                    text: "Pedido guardado con exito",
+                    icon: 'success',
+                    confirmButtonText: 'Ok'
+                  }).then((result) => {
+                    if (result.isConfirmed) {
                       location.href = './pedido_compra.php';
-                    });
+                    }
+                  });
                 }, 2000);
 
 
               } else if (response.status == "error" && response.message == "No autorizado") {
-                Swal({
-                  title: "Sesión ha expirado",
+                Swal.fire({
+                  title: 'Sesión ha expirado',
                   text: "Su sesión ha expirado, favor vuelva a iniciar sesión en el sistema.",
-                  type: "warning",
-                  confirmButtonText: "Ok",
-                  closeOnConfirm: false
+                  icon: 'warning',
+                  confirmButtonText: 'Ok'
                 });
               } else {
                 $('#error_message').html(response.message);
@@ -507,24 +545,24 @@ $fecha = date("d/m/Y", strtotime($fechaingreso));
                 $('#guardar').removeAttr("disabled");
               }
             } catch (error) {
-
-              Swal({
-                title: 'Advertencia!',
-                text: 'Ocurrio un error intentado resolver la solicitud. Por favor contacte con el administrador del sistema',
+              Swal.fire({
+                title: 'Advertencia',
+                text: "Ocurrio un error intentado resolver la solicitud. Por favor contacte con el administrador del sistema",
                 icon: 'warning',
-                confirmButtonText: 'OK'
+                confirmButtonText: 'Ok'
               });
               console.log(error);
 
             }
           },
           error: function(error) {
-            Swal({
-              title: 'Advertencia!',
-              text: 'Ocurrio un error intentado comunicarse con el servidor. Por favor contacte con el administrador de la red',
-              icon: 'error',
-              confirmButtonText: 'OK'
+            Swal.fire({
+              title: 'Advertencia',
+              text: "Ocurrio un error intentado resolver la solicitud. Por favor contacte con el administrador de la red",
+              icon: 'warning',
+              confirmButtonText: 'Ok'
             });
+
             console.log(error);
           }
         });
@@ -543,26 +581,39 @@ $fecha = date("d/m/Y", strtotime($fechaingreso));
             response = JSON.parse(data);
             if (response.status == "success") {
               setTimeout(function() {
-                swal({
-                    title: "Éxito!",
-                    text: "Se cancelado el pedido.",
-                    type: "success",
-                    confirmButtonText: "Ok",
-                    closeOnConfirm: false
-                  },
-                  function() {
-                    location.href = './pedido_compra.php';
-                  });
+                Swal.fire({
+                  title: 'Éxito',
+                  text: 'Se cancelado el pedido.',
+                  icon: 'success',
+                  confirmButtonText: 'Ok'
+                }).then((result) => {
+                  location.href = './pedido_compra.php';
+                });
               }, 2000);
             } else {
-              swal("Advertencia", "Ocurrio un error intentado resolver la solicitud. Por favor contacte con el administrador del sistema", "warning");
+              Swal.fire({
+                title: 'Advertencia',
+                text: "Ocurrio un error intentado resolver la solicitud. Por favor contacte con el administrador del sistema",
+                icon: 'warning',
+                confirmButtonText: 'Ok'
+              });
             }
           } catch (error) {
-            swal("Advertencia", "Ocurrio un error intentado resolver la solicitud. Por favor contacte con el administrador del sistema", "warning");
+            Swal.fire({
+              title: 'Advertencia',
+              text: "Ocurrio un error intentado resolver la solicitud. Por favor contacte con el administrador del sistema",
+              icon: 'warning',
+              confirmButtonText: 'Ok'
+            });
           }
         },
         error: function(data) {
-          swal("Advertencia", "Ocurrio un error intentado comunicarse con el servidor. Por favor contacte con el administrador de la red", "warning");
+          Swal.fire({
+            title: 'Advertencia',
+            text: "Ocurrio un error intentado resolver la solicitud. Por favor contacte con el administrador dela red",
+            icon: 'warning',
+            confirmButtonText: 'Ok'
+          });
         }
       });
     });

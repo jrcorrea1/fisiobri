@@ -17,7 +17,7 @@ if (!empty($_POST)) {
     $sql_update = mysqli_query($conexion, "UPDATE cargo SET cargo = '$cargo',estado = '$estado' WHERE id = $idcargo");
 
     if ($sql_update) {
-      $alert = '<div class="alert alert-primary" role="alert">
+      $alert = '<div class="alert alert-success" role="alert">
                   Modificado Correctamente!
                   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
@@ -54,12 +54,17 @@ if ($result_sql == 0) {
   }
 }
 ?>
-<!-- Begin Page Content -->
+<div class="card"style="left: 20px;right: -30;right: 20px;margin-right: 42px;margin-bottom: 20px">
+  <div class="card-header text-white" style="background-color: rgb(43, 167, 228);">
+    Mantenimiento de Cargos / Editar
+  </div>
+      <div class="card">
+        <div class="card-body">
 <div class="container-fluid">
   <div class="row" style="margin-bottom: 400px;">
       <div class="col-lg-6 m-auto">
           <div class="card-header bg-primary text-white">
-              Editar cargo
+              Editar Cargo
           </div>
           <div class="card">
   <div class="row"style="margin-bottom: 50px;">
@@ -68,12 +73,12 @@ if ($result_sql == 0) {
       <form class="" action="" method="post">
         <input type="hidden" name="id" value="<?php echo $idcargo; ?>">
         <div class="form-group">
-          <label for="cargo">cargo</label>
+          <label for="cargo">Cargo</label>
           <input type="text" placeholder="Ingrese cargo" name="cargo" class="form-control" id="cargo" value="<?php echo $cargo; ?>">
         </div>
         <div class="row">
           <label for="cars" style="padding-left: 15px;">Estado</label>
-          <select name="estado" id="estado" style="margin-left: 15px;">
+          <select name="estado" class="form-control" id="estado" style="margin-left: 15px;">
             <option value="Activo">Activo</option>
             <option value="Inactivo">Inactivo</option>
           </select>

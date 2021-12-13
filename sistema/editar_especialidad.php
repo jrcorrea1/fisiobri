@@ -55,12 +55,12 @@ if ($result_sql == 0) {
 }
 ?>
 <!-- Begin Page Content -->
-<div class="container-fluid">
-  <div class="row" style="margin-bottom: 400px;">
-      <div class="col-lg-6 m-auto">
-          <div class="card-header bg-primary text-white">
-              Editar especialidad
-          </div>
+<div class="card"style="left: 20px;right: -30;right: 20px;margin-right: 42px;margin-bottom: 20px">
+  <div class="card-header text-white" style="background-color: rgb(43, 167, 228);">
+    Mantenimiento de Especialidad / Editar
+  </div>
+      <div class="card">
+        <div class="card-body">
           <div class="card">
   <div class="row"style="margin-bottom: 50px;">
     <div class="col-lg-6 m-auto">
@@ -73,7 +73,7 @@ if ($result_sql == 0) {
         </div>
         <div class="row">
           <label for="cars" style="padding-left: 15px;">Estado</label>
-          <select name="estado" id="estado" style="margin-left: 15px;">
+          <select name="estado" id="estado" style="margin-left: 15px;" class="form-control">
             <option value="Activo">Activo</option>
             <option value="Inactivo">Inactivo</option>
           </select>

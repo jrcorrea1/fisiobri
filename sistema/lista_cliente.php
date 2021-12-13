@@ -1,12 +1,12 @@
 <?php include_once "includes/header.php"; ?>
 
 <!-- Begin Page Content -->
-<div class="container-fluid">
-
-	<!-- Page Heading -->
-	<div class="card" style="left: auto;right: -30;right: auto;margin-right: 0px;margin-bottom: 20px;">
-	  <div class="card-body">
-	    <div align="center"><h4>Mantenimiento de Clientes</h4></div>
+<div class="card"style="left: 20px;right: -30;right: 20px;margin-right: 42px;margin-bottom: 20px">
+	<div class="card-header text-white" style="background-color: rgb(43, 167, 228);">
+		Mantenimiento de Clientes
+	</div>
+			<div class="card">
+				<div class="card-body">
 		<a href="registro_cliente.php" class="btn btn-primary">Nuevo</a>
 	</div>
 	<div class="card">

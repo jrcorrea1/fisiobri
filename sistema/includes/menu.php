@@ -4,7 +4,8 @@
 	<!-- Sidebar - Brand -->
 	<a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
 		<div class="sidebar-brand-icon rotate-n-15">
-			<img src="img/logo.png" class="img-thumbnail">
+			<img src="img/logo.png" class="img-thumbnail"style="padding-left: 10px;padding-right: 10px;
+			padding-top: 10px;">
 		</div>
 		<div class="sidebar-brand-text mx-3">FisioBri</div>
 	</a>
@@ -17,7 +18,7 @@
 
 	<!-- Heading -->
 	<div class="sidebar-heading">
-		Interface
+		Herramientas
 	</div>
 
 	<!-- Nav Item - Pages Collapse Menu -->
@@ -39,9 +40,9 @@
 				<a class="collapse-item" href="lista_categoria.php"><i class="fas fa-dolly"></i> Categoria</a>
 				<a class="collapse-item" href="lista_marca.php"><i class="fas fa-dolly"></i> Marcas</a>
 				<a class="collapse-item" href="lista_productos.php"><i class="fas fa-box-open"></i> Productos</a>
-				<a class="collapse-item" href="lista_bancos.php"><i class="fas fa-university"></i> Bancos</a>
+				<a class="collapse-item" href="lista_banco.php"><i class="fas fa-university"></i> Bancos</a>
 				<a class="collapse-item" href="lista_proveedor.php"><i class="fas fa-truck"></i> Proveedores</a>
-				<a class="collapse-item" href="lista_usuarios.php"><i class="fas fa-truck-pickup"></i>Transportes</a>
+				<a class="collapse-item" href="lista_transporte.php"><i class="fas fa-truck-pickup"></i>Transportes</a>
 				<a class="collapse-item" href="lista_empresa.php"><i class="far fa-building"></i> Empresa</a>
 				<a class="collapse-item" href="lista_sucursal.php"><i class="fas fa-building" style="margin-right: 5px"></i>Sucursal</a>
 			</div>
@@ -55,8 +56,8 @@
 		<div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionSidebar">
 			<div class="bg-white py-2 collapse-inner rounded">
 				<a class="collapse-item" href="pedido_compra.php"><i class="fas fa-plus-circle" style="margin-right: 5px"></i>Pedidos de Compras</a>
-				<a class="collapse-item" href="#"><i class="fab fa-shopify"style="margin-right: 5px"></i>Compras</a>
-				<a class="collapse-item" href="#"><i class="fas fa-dolly"style="margin-right: 5px"></i>Devoluciones</a>
+				<a class="collapse-item" href="nueva_compra.php"><i class="fab fa-shopify"style="margin-right: 5px"></i>Compras</a>
+				
 			</div>
 		</div>
 	</li>
@@ -69,6 +70,8 @@
 			<div class="bg-white py-2 collapse-inner rounded">
 				<a class="collapse-item" href="ventas.php"><i class="fas fa-hand-holding-usd"></i>Ventas</a>
 				<a class="collapse-item" href="nueva_venta.php"><i class="fas fa-plus-circle" style="margin-right: 5px"></i>Nueva Venta</a>
+				<a class="collapse-item" href="credito.php"><i class="fas fa-dolly"style="margin-right: 5px"></i>Nota de Credito</a>
+			
 			</div>
 		</div>
 	</li>
@@ -96,7 +99,7 @@
 			</div>
 	</li>
 		<li class="nav-item">
-			<a class="nav-link" href="#">
+			<a class="nav-link" href="menu_deposito.php">
 				<i class="fas fa-boxes"style="margin-right: 5px"></i>
 				<span>Deposito</span>
 			</a>
@@ -116,7 +119,7 @@
 	<?php if ($_SESSION['rol'] == 1) { ?>
 		<!-- Nav Item - Usuarios Collapse Menu -->
 		<li class="nav-item">
-			<a class="nav-link" href="sec.php">
+			<a class="nav-link" href="menu_seguridad.php">
 				<i class="fas fa-unlock-alt" style="margin-right: 5px"></i>
 				<span>Seguridad</span>
 			</a>

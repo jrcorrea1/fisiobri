@@ -1,19 +1,19 @@
 <?php include_once "includes/header.php"; ?>
 
-<div class="card" style="left: 20px;right: -30;right: 20px;margin-right: 42px;margin-bottom: 20px">
-  <div class="card-body">
-    <div align="center"><h4>Mantenimiento de Pais</h4></div>
+<div class="card"style="left: 20px;right: -30;right: 20px;margin-right: 42px;margin-bottom: 20px">
+  <div class="card-header text-white" style="background-color: rgb(43, 167, 228);">
+    Mantenimiento de Pais / Nacionalidad
   </div>
-</div>
+      <div class="card"style="height: 900px;">
+        <div class="card-body">
 	<!-- Page Heading -->
 	<div class="col-sm-2">
     <div class="card" style="width: 18rem;left: 10px;">
-    <img src="img/map.png" class="card-img-top" alt="..." style="
-    width: 150px;margin-left: 50px;margin-top: 20px;">
+    <img src="img/map.png" class="card-img-top" alt="..." style="width: 150px;margin-left: 50px;margin-top: 20px;">
           <div class="card-body">
         <h5 class="card-title"><strong>Pais / Nacionalidad</strong></h5>
         <p class="card-text">Se procede a registrar paises</p>
-        <a href="registro_pais.php" class="btn btn-primary">Nuevo</a>
+        <a href="registro_pais.php" class="btn btn-primary"data-toggle="tooltip" data-placement="top" title="Nuevo registro">Nuevo</a>
 				<a href="informes/infopais.php" class="btn btn-danger"><i class="far fa-file-pdf"></i>Informes</a>
       </div>
     </div>
@@ -50,12 +50,9 @@
 									<td><?php echo $data['estado']; ?></td>
 									<?php if ($_SESSION['rol'] == 1) { ?>
 									<td>
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-  Launch demo modal
-</button>
-										<a href="editar_pais.php?id=<?php echo $data['id']; ?>" class="btn btn-success"><i class='fas fa-edit'></i> Editar</a>
+										<a href="editar_pais.php?id=<?php echo $data['id']; ?>" class="btn btn-success"data-toggle="tooltip" data-placement="top" title="Editar"><i class='fas fa-edit'></i></a>
 										<form action="eliminar_pais.php?id=<?php echo $data['id']; ?>" method="post" class="confirmar d-inline">
-											<button class="btn btn-danger" type="submit"><i class='fas fa-trash-alt'></i> </button>
+											<button class="btn btn-danger" type="submit" data-toggle="tooltip" data-placement="top" title="Anular"><i class='fas fa-trash-alt'></i> </button>
 										</form>
 									</td>
 									<?php } ?>
@@ -63,19 +60,10 @@
 						<?php }
 						} ?>
 					</tbody>
-
 				</table>
 			</div>
-
 		</div>
 	</div>
-
-
 </div>
-<!-- /.container-fluid -->
-
-</div>
-<!-- End of Main Content -->
-
 
 <?php include_once "includes/footer.php"; ?>

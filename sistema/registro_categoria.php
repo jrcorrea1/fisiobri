@@ -6,6 +6,9 @@ if (!empty($_POST)) {
     if (empty($_POST['categoria'])) {
         $alert = '<div class="alert alert-danger" role="alert">
                         Todo los campos son obligatorios
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>';
     } else {
         $categoria = $_POST['categoria'];
@@ -26,7 +29,7 @@ if (!empty($_POST)) {
 
         $query_insert = mysqli_query($conexion, "INSERT INTO categoria(categoria,estado,usuario_id) values ('$categoria','$estado','$usuario_id')");
         if ($query_insert) {
-            $alert = '<div class="alert alert-primary" role="alert">
+            $alert = '<div class="alert alert-success" role="alert">
                         categoria Registrado
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -46,10 +49,12 @@ if (!empty($_POST)) {
 mysqli_close($conexion);
 ?>
 
-<!-- Begin Page Content -->
-<div class="container-fluid">
-  <h1 class="h3 mb-0 text-gray-800" style="padding-left: 20px;">
-    Mantenimiento categoria</h1><br>
+<div class="card"style="left: 20px;right: -30;right: 20px;margin-right: 42px;margin-bottom: 20px">
+  <div class="card-header text-white" style="background-color: rgb(43, 167, 228);">
+    Mantenimiento de Categoria / Nuevo
+  </div>
+      <div class="card">
+        <div class="card-body">
     <!-- Content Row -->
     <div class="row">
         <div class="col-lg-6 m-auto">
@@ -65,7 +70,7 @@ mysqli_close($conexion);
                     </div>
                     <div class="row">
                       <label for="cars" style="padding-left: 15px;">Estado</label>
-                      <select name="estado" id="estado" style="margin-left: 15px;">
+                      <select name="estado" id="estado" style="margin-left: 15px;" class="form-control">
                         <option value="Activo">Activo</option>
                         <option value="Inactivo">Inactivo</option>
                       </select>

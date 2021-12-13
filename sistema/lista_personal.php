@@ -1,15 +1,12 @@
 <?php include_once "includes/header.php"; ?>
 
 <!-- Begin Page Content -->
-<div class="card" style="    left: 20px;
-    right: -30;
-    right: 20px;
-    margin-right: 42px;
-    margin-bottom: 20px">
-  <div class="card-body">
-    <div align="center"><h4>Mantenimiento del Personal</h4></div>
+<div class="card"style="left: 20px;right: -30;right: 20px;margin-right: 42px;margin-bottom: 20px">
+  <div class="card-header text-white" style="background-color: rgb(43, 167, 228);">
+    Mantenimiento de Personal
   </div>
-</div>
+      <div class="card">
+        <div class="card-body">
 <div class="container-fluid">
 	<h1 class="h3 mb-0 text-gray-800" style="padding-left: 20px;">
 		</h1>

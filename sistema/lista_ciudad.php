@@ -1,16 +1,14 @@
 <?php include_once "includes/header.php"; ?>
 
 <!-- Begin Page Content -->
-	<div class="container-fluid">
-<div class="card" style="    left: 20px;
-    right: -30;
-    right: 20px;
-    margin-right: 42px;
-    margin-bottom: 20px">
-  <div class="card-body">
-    <div align="center"><h4>Mantenimiento de Ciudad</h4></div>
+<div class="card"style="left: 20px;right: -30;right: 20px;margin-right: 42px;margin-bottom: 20px">
+  <div class="card-header text-white" style="background-color: rgb(43, 167, 228);">
+    Mantenimiento de Ciudad
   </div>
-</div>
+      <div class="card"style="
+    height: 902px;
+">
+        <div class="card-body">
 
 	<!-- Page Heading -->
 	<div class="col-sm-2">
@@ -34,6 +32,7 @@
 						<tr>
 							<th>ID</th>
 							<th>CIUDAD</th>
+              <th>DEPARTAMENTO</th>
 							<th>ESTADO</th>
 							<?php if ($_SESSION['rol'] == 1) { ?>
 							<th>ACCIONES</th>
@@ -51,6 +50,7 @@
 								<tr>
 									<td><?php echo $data['id']; ?></td>
 									<td><?php echo $data['ciudad']; ?></td>
+                  <td><?php echo $data['departamento']; ?></td>
 									<td><?php echo $data['estado']; ?></td>
 									<?php if ($_SESSION['rol'] == 1) { ?>
 									<td>

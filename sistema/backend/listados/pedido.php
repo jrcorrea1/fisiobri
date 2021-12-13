@@ -40,7 +40,7 @@ if ($_SESSION['idUser']) {
     /****** FINISH - FOR PAGINATION ******/
 
     /****** BEGIN - TABLE RECORDS AND FILTERING ******/
-    $sql = "SELECT id, fecha, proveedor_id, sucursa_id,  usuario_id  from pedido_compra
+    $sql = "SELECT id, fecha, proveedor_id, sucursa_id,  usuario_id, estado  from pedido_compra
   WHERE 1=1";
 
     // FILTROS
@@ -91,6 +91,7 @@ if ($_SESSION['idUser']) {
             $row['proveedor'] = $proveedor['proveedor'];
             $row['sucursal'] = $sucursal['nombre'];
             $row['usuario'] = $usuario['nombre'];
+            $row['estado'] = $pedido['estado'];
             array_push($data, $row);
         }
     }

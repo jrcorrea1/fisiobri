@@ -51,7 +51,8 @@
 		$pdf->SetFont('Arial', 'B', 13);
 		$pdf->Cell(50, 10, "Fecha de Emision: ", 0, 0, 'L');
 		$pdf->SetFont('Arial', '', 12);
-		$pdf->Cell(50, 10, $result_venta['fecha'], 0, 1, 'L');
+		$fecha_venta = date("d/m/Y", strtotime($result_venta['fecha']));
+		$pdf->Cell(50, 10, $fecha_venta, 0, 1, 'L');
 		$pdf->SetFont('Arial', 'BU', 13);
 		$pdf->Cell(85, 10, "Nombre completo", 0, 0, 'L');
 		$pdf->Cell(30, 10, "Ruc", 0, 0, 'L');

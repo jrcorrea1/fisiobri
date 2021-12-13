@@ -1,23 +1,11 @@
 <?php include_once "includes/header.php"; ?>
-
-<!-- Begin Page Content -->
 <div class="container-fluid">
-
-	<!-- Page Heading -->
-<div class="card" style="    left: 20px;
-    right: -30;
-    right: 20px;
-    margin-right: 42px;
-    margin-bottom: 20px">
-  <div class="card-body">
-    <div align="center"><h4>PANEL DE ADMINSTRACION</h4></div>
-  </div>
-</div>
-
-	<!-- Content Row -->
+  <div class="card"style="left: 20px;right: -30;right: 20px;margin-right: 42px;margin-bottom: 20px">
+    <div class="card-header text-white" style="background-color: rgb(43, 167, 228);">
+      Menu Principal
+    </div>
+    </div>
 	<div class="row">
-
-		<!-- Earnings (Monthly) Card Example -->
 		<a class="col-xl-3 col-md-6 mb-4" href="lista_usuarios.php">
 			<div class="card border-left-primary shadow h-100 py-2">
 				<div class="card-body">
@@ -95,71 +83,55 @@
 		</a>
 	</div>
 	<!-- Page Heading -->
-		<div class="d-sm-flex align-items-center justify-content-between mb-4">
-			<h1 class="h3 mb-0 text-gray-800">Acessos Directos</h1>
-		</div>
+  <div class="card"style="left: 20px;right: -30;right: 20px;margin-right: 42px;margin-bottom: 20px">
+    <div class="card-header text-white" style="background-color: rgb(43, 167, 228);">
+      Accesos rapidos
+    </div>
+        <div class="card">
+          <div class="card-body">
 	<div class="row">
-                            <div class="col-xl-3 col-md-6" style="
-    padding-left: 50px;
-    padding-right: 50px;
-">
-                                <div class="card bg-primary text-white mb-4">
-                                  <img class="card-img-top" src="img/boxes.png">
-                                    <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a href="lista_productos.php" class="btn btn-primary stretched-link">Productos</a>
-                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-md-6" style="
-    padding-left: 50px;
-    padding-right: 50px;
-">
-                                <div class="card bg-warning text-white mb-4">
-                                  <img class="card-img-top" src="img/personal.png">
-                                  <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a href="lista_personal.php" class="btn btn-primary stretched-link">Personal</a>
-                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-md-6" style="
-    padding-left: 50px;
-    padding-right: 50px;
-">
-                                <div class="card bg-success text-white mb-4">
-                                  <img class="card-img-top" src="img/cliente.png">
-                                    <div class="card-footer d-flex align-items-center justify-content-between">
-                                      <a href="lista_cliente.php" class="btn btn-primary stretched-link">Clientes</a>
-                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-md-6" style="
-    padding-left: 50px;
-    padding-right: 50px;
-">
-                                <div class="card bg-danger text-white mb-4">
-                                  <img class="card-img-top" src="img/fisio.png">
-                                    <div class="card-footer d-flex align-items-center justify-content-between">
-                                      <a href="#" class="btn btn-primary stretched-link">Citas Medicas</a>
-                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-
-
+  <div class="col-xl-3 col-md-6" style="padding-left: 50px;padding-right: 50px;">
+        <div class="card bg-primary text-white mb-4">
+          <img class="card-img-top" src="img/boxes.png">
+            <div class="card-footer d-flex align-items-center justify-content-between">
+              <a href="lista_productos.php" class="btn btn-primary stretched-link">Productos</a>
+                <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+              </div>
+            </div>
+          </div>
+        <div class="col-xl-3 col-md-6" style="padding-left: 50px;padding-right: 50px;">
+          <div class="card bg-warning text-white mb-4">
+            <img class="card-img-top" src="img/personal.png">
+              <div class="card-footer d-flex align-items-center justify-content-between">
+                <a href="lista_personal.php" class="btn btn-primary stretched-link">Personal</a>
+                  <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                </div>
+              </div>
+            </div>
+  <div class="col-xl-3 col-md-6" style="padding-left: 50px;padding-right: 50px;">
+    <div class="card bg-success text-white mb-4">
+      <img class="card-img-top" src="img/cliente.png">
+        <div class="card-footer d-flex align-items-center justify-content-between">
+          <a href="lista_cliente.php" class="btn btn-primary stretched-link">Clientes</a>
+            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+          </div>
+        </div>
+      </div>
+  <div class="col-xl-3 col-md-6" style="padding-left: 50px;padding-right: 50px;">
+  <div class="card bg-danger text-white mb-4">
+  <img class="card-img-top" src="img/fisio.png">
+    <div class="card-footer d-flex align-items-center justify-content-between">
+      <a href="#" class="btn btn-primary stretched-link">Citas Medicas</a>
+      <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
 						</div>
 					</div>
 				</div>
 			</div>
-
-
 	</div>
-
-
 </div>
 <!-- /.container-fluid -->
 

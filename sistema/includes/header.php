@@ -33,6 +33,9 @@ if ($result_data > 0) {
 	$data = mysqli_fetch_assoc($query_data);
 }
 ?>
+<div class="loader-wrapper">
+    <span class="loader"><span class="loader-inner"></span></span>
+</div>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -43,17 +46,11 @@ if ($result_data > 0) {
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<meta name="description" content="">
 	<meta name="author" content="">
-
 	<title>FisioBri</title>
-
-	<!-- Custom styles for this template-->
 	<link href="css/sb-admin-2.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="css/dataTables.bootstrap4.min.css">
 	<link href="css/select2.min.css" rel="stylesheet" />
-	<link href="css/sweetalert.css" rel="stylesheet">
-
 </head>
-
 <body id="page-top">
 	<?php
 	include "../conexion.php";

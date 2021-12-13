@@ -55,6 +55,12 @@ if ($result_sql == 0) {
 }
 ?>
 <!-- Begin Page Content -->
+<div class="card"style="left: 20px;right: -30;right: 20px;margin-right: 42px;margin-bottom: 20px">
+  <div class="card-header text-white" style="background-color: rgb(43, 167, 228);">
+    Mantenimiento de Categoria / Editar
+  </div>
+      <div class="card">
+        <div class="card-body">
 <div class="container-fluid">
   <div class="row" style="margin-bottom: 400px;">
       <div class="col-lg-6 m-auto">

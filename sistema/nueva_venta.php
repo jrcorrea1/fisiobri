@@ -1,21 +1,11 @@
-<?php include_once "includes/header.php";
-include('core/config.php');
-$dbconn = getConnection();
-// usuario
-$stmt = $dbconn->query('SELECT estado FROM apertura_cierre');
-$apertura = $stmt->fetch(PDO::FETCH_ASSOC);
-?>
+<?php include_once "includes/header.php"; ?>
 
 <!-- Begin Page Content -->
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-12">
             <div class="form-group">
-                <div class="card" style="    left: 0px;
-
-right: 40px;
-                                    margin-right: 42px;
-                                    margin-bottom: 20px">
+                <div class="card" style="left: 0px;right: 40px;margin-right: 42px;margin-bottom: 20px">
                     <div class="card-body">
                         <div align="center">
                             <h4>Registro de Ventas</h4>
@@ -63,11 +53,7 @@ right: 40px;
             </div></br>
             <div class="col-lg-12">
                 <div class="form-group">
-                    <div class="card" style="    left: 0px;
-
-    right: 40px;
-                                        margin-right: 42px;
-                                        margin-bottom: 20px">
+                    <div class="card" style="left: 0px;right: 40px;margin-right: 42px;margin-bottom: 20px">
                         <div class="card-body">
                             <div align="center">
                                 <h4>Detalles de Venta</h4>
@@ -94,7 +80,7 @@ right: 40px;
                             <thead class="thead-dark">
                                 <tr>
                                     <th width="90px">Código del Producto</th>
-                                    <th>Producto</th>
+                                    <th>Nombre de Producto</th>
                                     <th>Stock Actual</th>
                                     <th width="100px">Cantidad</th>
                                     <th class="textright">Precio Unit</th>
@@ -118,10 +104,8 @@ right: 40px;
                                     <th>Código</th>
                                     <th colspan="2">Producto</th>
                                     <th>Cantidad</th>
-                                    <th class="textright">Precio Uni</th>
-                                    <th class="textright">Exenta</th>
-                                    <th class="textright">Iva 5%</th>
-                                    <th class="textright">Iva 10%</th>
+                                    <th class="textright">Precio Unit</th>
+                                    <th class="textright">Importe total</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -145,32 +129,72 @@ right: 40px;
     </div>
     <!-- End of Main Content -->
 
+    <div class="modal fade bs-example-modal-lg" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <form id="form" class="user">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">Buscar productos</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group row mb-3">
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="des" name="des" placeholder="Buscar productos">
+                            </div>
+                            <div class="col-sm-4">
+                                <button id="filtrar" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
+                            </div>
+                            <div id="loading" class="col-sm-12 text-center hide" style="display: none;">
+                                <i class="fa fa-spinner fa-spin"></i> Procesando consulta
+                            </div>
 
+                        </div>
+
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="listaproducto" class="table table-bordered" width="100%" cellspacing="0">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th>ID</th>
+                                            <th style=" white-space: nowrap;">Nombre</th>
+                                            <th>Precio</th>
+                                            <th>Marca</th>
+                                            <th>Categoria</th>
+                                            <th>Cantidad</th>
+                                            <th><span class="pull-right">Accion</span></th>
+                                        </tr>
+                                    </thead>
+
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer justify-content-between">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+
+
+                </div>
+            </form>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
     <?php include_once "includes/footer.php"; ?>
-    <script src="./js/producto.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
-            const estado = "<?= $apertura['estado']; ?>";
-            if (estado == 0) {
-                setTimeout(function() {
-                    swal({
-                            title: "Alerta",
-                            text: "Debe abrir una caja antes de realizar operaciones",
-                            type: "warning",
-                            confirmButtonText: "Ok",
-                            closeOnConfirm: false,
-                            closeOnClickOutside: false,
-                            closeOnEsc: false,
-                            allowOutsideClick: false,
-                            allowEscapeKey: false
-                        },
-                        function() {
-                            location.href = './apertura-cierre.php';
-                        });
-                }, 1000);
-            }
 
 
+            $("#txt_cod_producto").on('keyup', function(e) {
+                var keycode = (e.keyCode ? e.keyCode : e.which);
 
+            
+                    $('#myModal1').modal('show');                    
+            
+            });
         });
     </script>

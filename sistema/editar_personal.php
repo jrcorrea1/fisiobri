@@ -60,7 +60,7 @@ if (!empty($_POST)) {
         direccion = '$direccion',telefono = '$telefono', email = '$email' WHERE idpersonal = $idpersonal");
 
       if ($sql_update) {
-        $alert = '<div class="alert alert-primary" role="alert">
+        $alert = '<div class="alert alert-success" role="alert">
                     Modificado Exitosamente
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -81,6 +81,7 @@ if (!empty($_POST)) {
 
 if (empty($_REQUEST['id'])) {
   header("Location: lista_personal.php");
+  mysqli_close($conexion);
 }
 $idpersonal = $_REQUEST['id'];
 $sql = mysqli_query($conexion, "SELECT * FROM personal WHERE idpersonal = $idpersonal");
@@ -98,7 +99,6 @@ if ($result_sql == 0) {
     $cargo = $data['cargo'];
     $pais = $data['pais'];
     $departamento = $data['departamento'];
-
     $ciudad = $data['ciudad'];
     $barrio = $data['barrio'];
     $direccion = $data['direccion'];
@@ -107,13 +107,27 @@ if ($result_sql == 0) {
 }
 }
 ?>
-      <!-- Begin Page Content -->
-      <div class="container-fluid">
-      <h1 class="h3 mb-0 text-gray-800" style="padding-left: 20px;">
-        Mantenimiento Personal</h1><br>
-          <!-- Page Heading -->
-
-          <!-- Content Row -->
+<div class="card"style="left: 20px;right: -30;right: 20px;margin-right: 42px;margin-bottom: 20px">
+  <div class="card-header text-white" style="background-color: rgb(43, 167, 228);">
+    Mantenimiento de Personal / Editar
+  </div>
+      <div class="card"style="height: 1002px;">
+        <div class="card-body">
+  <!-- Page Heading -->
+  <div class="col-sm-2">
+    <div class="card" style="width: 18rem;left: 10px;">
+    <img src="img/personales.jpg" class="card-img-top" alt="..." style="width: 150px;margin-left: 50px;margin-top: 20px;">
+          <div class="card-body">
+        <h5 class="card-title"><strong>Personal</strong></h5>
+      </div>
+    </div>
+  </div>
+    <!-- Content Row -->
+    <div class="card"style="margin-left: 250px;margin-right: 250px;left: 110px;padding-top: 10px;padding-bottom: 10px;bottom: 218px;">
+      <div class="card"style="left: 20px;right: -30;right: 20px;margin-right: 42px;margin-bottom: 20px">
+        <div class="card-header text-white" style="background-color: rgb(43, 167, 228);">
+          Editar
+        </div>
           <div class="row" style="
           margin-bottom: 50px;
       ">
@@ -121,10 +135,10 @@ if ($result_sql == 0) {
 
               <form class="" action="" method="post">
                 <?php echo isset($alert) ? $alert : ''; ?>
-                <div class="card">
-                  <div class="card-header bg-primary text-white">
-                    Editar personal
-                  </div>
+                <div class="card"style="
+    width: 582px;
+    right: 140px;
+">
                 <input type="hidden" name="id" value="<?php echo $idpersonal; ?>">
               <div class="form-group col-md-5" style="margin-left: 0px;margin-right: 0px;padding-left: 35px;margin-top: 20px;">
                   <label for="dni">N° Cedula</label>
@@ -147,11 +161,7 @@ if ($result_sql == 0) {
               </div>
               <div class="form-group col-md-5">
                   <label for="genero">Genero</label>
-                  <select name="genero" style="
-  margin-top: 32px;
-  margin-left: 10px;
-  padding-right: 45px;
-">
+                  <select name="genero"  class="form-control">
                     <option value="Masculino">Masculino</option>
                     <option value="Femenino" selected>Femenino</option>
                     <option value="Otros">Otros</option>
@@ -166,18 +176,13 @@ if ($result_sql == 0) {
                    $resultado_cargo = mysqli_num_rows($query_cargo);
                    //mysqli_close($conexion);
                    ?>
-                  <select id="cargo" name="cargo" class="form-control">
-                    <?php
-                     if ($resultado_cargo > 0) {
-                       while ($cargo = mysqli_fetch_array($query_cargo)) {
-                         // code...
-                     ?>
-                        <option value="<?php echo $cargo['cargo']; ?>"><?php echo $cargo['cargo']; ?></option>
-                    <?php
-                       }
-                     }
-                     ?>
-                  </select>
+                   <select class="form-control seleccion" id="cargo" name="cargo">
+                 <option value="">--- Seleccionar cargo ---</option>
+                 <?php foreach ($query_cargo as $car) {
+                   $selected = ($car['cargo'] == $cargo) ? "selected" : null;
+                   echo '<option value="' . $car['cargo'] . '" ' . $selected . '>' . $car['cargo'] . '</option>';
+                 } ?>
+               </select>
               </div>
                 <div class="form-group col-md-5">
                     <label for="pais">Nacionalidad</label>
@@ -209,14 +214,13 @@ if ($result_sql == 0) {
                    $resultado_departamento = mysqli_num_rows($query_departamento);
                    //mysqli_close($conexion);
                    ?>
-              
-                  <select class="form-control seleccion" id="departamento" name="departamento">
-                    <option value="">--- Seleccionar rol ---</option>
-                    <?php foreach ($query_departamento as $dep) {
-                      $selected = ($dep['departamento'] == $departamento) ? "selected" : null;
-                      echo '<option value="' . $dep['departamento'] . '" ' . $selected . '>' . $dep['departamento'] . '</option>';
-                    } ?>
-                  </select>
+                   <select class="form-control seleccion" id="departamento" name="departamento">
+                 <option value="">--- Seleccionar departamento ---</option>
+                 <?php foreach ($query_departamento as $dep) {
+                   $selected = ($dep['departamento'] == $departamento) ? "selected" : null;
+                   echo '<option value="' . $dep['departamento'] . '" ' . $selected . '>' . $dep['departamento'] . '</option>';
+                 } ?>
+               </select>
               </div>
               <div class="form-group col-md-5">
                   <label for="ciudad">Ciudad</label>
@@ -225,18 +229,13 @@ if ($result_sql == 0) {
                    $resultado_ciudad = mysqli_num_rows($query_ciudad);
                    mysqli_close($conexion);
                    ?>
-                  <select id="ciudad" name="ciudad" class="form-control">
-                    <?php
-                     if ($resultado_ciudad > 0) {
-                       while ($ciudad = mysqli_fetch_array($query_ciudad)) {
-                         // code...
-                     ?>
-                        <option value="<?php echo $ciudad['ciudad']; ?>"><?php echo $ciudad['ciudad']; ?></option>
-                    <?php
-                       }
-                     }
-                     ?>
-                  </select>
+                   <select class="form-control seleccion" id="ciudad" name="ciudad">
+                 <option value="">--- Seleccionar departamento ---</option>
+                 <?php foreach ($query_ciudad as $ciu) {
+                   $selected = ($ciu['ciudad'] == $ciudad) ? "selected" : null;
+                   echo '<option value="' . $ciu['ciudad'] . '" ' . $selected . '>' . $ciu['ciudad'] . '</option>';
+                 } ?>
+               </select>
               </div>
               </div>
               <div class="row" style="margin-left: 0px;margin-right: 0px;padding-left: 20px;">
@@ -259,10 +258,7 @@ if ($result_sql == 0) {
                   <input type="email" placeholder="Ingrese email" name="email" id="email" class="form-control" value="<?php echo $email; ?>">
               </div>
               </div>
-              <div class="form-group col1-md-8" style="
-  margin-bottom: 50px;
-">
-
+              <div class="form-group col1-md-8" style="margin-bottom: 50px;">
                 <input type="submit" value="Actualizar" class="btn btn-primary" style="margin-left: 220px;">
                 <a href="lista_personal.php" class="btn btn-danger">Regresar</a>
               </form>

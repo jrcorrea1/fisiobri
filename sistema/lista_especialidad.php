@@ -1,17 +1,18 @@
 <?php include_once "includes/header.php"; ?>
 
 <!-- Begin Page Content -->
-	<div class="container-fluid">
-		<h1 class="h3 mb-0 text-gray-800" style="
-    padding-left: 20px;
-">Mantenimiento de Especialidades</h1><br>
+<div class="card"style="left: 20px;right: -30;right: 20px;margin-right: 42px;margin-bottom: 20px">
+	<div class="card-header text-white" style="background-color: rgb(43, 167, 228);">
+		Mantenimiento de Especialidad
+	</div>
+			<div class="card">
+				<div class="card-body">
 
 	<!-- Page Heading -->
   <div class="col-sm-2">
     <div class="card" style="width: 18rem;left: 10px;">
-    <img src="img/prof.png" class="card-img-top" alt="..." style="
-    width: 150px;margin-left: 50px;margin-top: 20px;">
-          <div class="card-body">
+    <img src="img/prof.png" class="card-img-top" alt="..." style="width: 150px;margin-left: 50px;margin-top: 20px;">
+      <div class="card-body">
         <h5 class="card-title"><strong>Especialidades</strong></h5>
         <p class="card-text">Se registra la especilidad de empleados de salud</p>
         <a href="registro_especialidad.php" class="btn btn-primary">Nuevo</a>

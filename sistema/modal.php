@@ -69,6 +69,92 @@ if ($_POST['action'] == 'searchFactura') {
   }
   exit;
 }
+// Buscar pedido_servicio
+if ($_POST['action'] == 'searchPedido') {
+  if (!empty($_POST['pedido'])) {
+    $pedido = $_POST['pedido'];
+    $query = mysqli_query($conexion, "SELECT * FROM pedido_servicio WHERE pedido LIKE '$pedido'");
+    mysqli_close($conexion);
+    $result = mysqli_num_rows($query);
+    $data = '';
+    if ($result > 0) {
+      $data = mysqli_fetch_assoc($query);
+    }else {
+      $data = 0;
+    }
+    echo json_encode($data,JSON_UNESCAPED_UNICODE);
+  }
+  exit;
+}
+// Buscar Cliente2
+if ($_POST['action'] == 'searchCli') {
+  if (!empty($_POST['cliente'])) {
+    $dni= $_POST['cliente'];
+
+    $query = mysqli_query($conexion, "SELECT * FROM cliente WHERE dni LIKE '$dni'");
+    mysqli_close($conexion);
+    $result = mysqli_num_rows($query);
+    $data = '';
+    if ($result > 0) {
+      $data = mysqli_fetch_assoc($query);
+    }else {
+      $data = 0;
+    }
+    echo json_encode($data,JSON_UNESCAPED_UNICODE);
+  }
+  exit;
+}
+// Buscar id para pedido delivery
+if ($_POST['action'] == 'searchId') {
+  if (!empty($_POST['cliente'])) {
+    $idcliente = $_POST['cliente'];
+    $query = mysqli_query($conexion, "SELECT * FROM cliente WHERE idcliente LIKE '$idcliente'");
+    mysqli_close($conexion);
+    $result = mysqli_num_rows($query);
+    $data = '';
+    if ($result > 0) {
+      $data = mysqli_fetch_assoc($query);
+    }else {
+      $data = 0;
+    }
+    echo json_encode($data,JSON_UNESCAPED_UNICODE);
+  }
+  exit;
+}
+// Buscar pedi para pedido registro de delivery
+if ($_POST['action'] == 'searchPed') {
+  if (!empty($_POST['nopedido'])) {
+    $id = $_POST['nopedido'];
+    $query = mysqli_query($conexion, "SELECT * FROM pedido_delivery WHERE id LIKE '$id'");
+    mysqli_close($conexion);
+    $result = mysqli_num_rows($query);
+    $data = '';
+    if ($result > 0) {
+      $data = mysqli_fetch_assoc($query);
+    }else {
+      $data = 0;
+    }
+    echo json_encode($data,JSON_UNESCAPED_UNICODE);
+  }
+  exit;
+}
+// Buscar chofer
+if ($_POST['action'] == 'searchCh') {
+  if (!empty($_POST['chofer'])) {
+    $id = $_POST['chofer'];
+    $query = mysqli_query($conexion, "SELECT * FROM personal WHERE idpersonal LIKE '$id' and cargo='chofer'");
+    mysqli_close($conexion);
+    $result = mysqli_num_rows($query);
+    $data = '';
+    if ($result > 0) {
+      $data = mysqli_fetch_assoc($query);
+    }else {
+      $data = 0;
+    }
+    echo json_encode($data,JSON_UNESCAPED_UNICODE);
+  }
+  exit;
+}
 // registrar cliente = ventas
 if ($_POST['action'] == 'addCliente') {
   $dni = $_POST['dni_cliente'];

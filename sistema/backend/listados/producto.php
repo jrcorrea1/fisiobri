@@ -11,7 +11,6 @@ $dbconn = getConnection();
 if ($_SESSION['idUser']) {
 
 
-
   /****** BEGIN - VARIABLES DEFINITION ******/
   $request = $_REQUEST;
   $recordsTotal = 0;

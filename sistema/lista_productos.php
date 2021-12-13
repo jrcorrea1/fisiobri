@@ -1,16 +1,17 @@
 <?php include_once "includes/header.php"; ?>
 
 <!-- Begin Page Content -->
-<div class="container-fluid">
-
-	<!-- Page Heading -->
-	<div class="d-sm-flex align-items-center justify-content-between mb-4">
-		<h1 class="h3 mb-0 text-gray-800">Productos</h1>
+<div class="card"style="left: 20px;right: -30;right: 20px;margin-right: 42px;margin-bottom: 20px">
+  <div class="card-header text-white" style="background-color: rgb(43, 167, 228);">
+    Mantenimiento de Productos
+  </div>
+      <div class="card">
+        <div class="card-body">
 		<a href="registro_producto.php" class="btn btn-primary">Nuevo</a>
 	</div>
 
 	<div class="row">
-		<div class="col-lg-12">
+		<div class="col-lg-12" style="margin-right: 0px;right: 10px;left: 10px;padding-right: 30px;">
 			<div class="table-responsive">
 				<table class="table table-striped table-bordered" id="table">
 					<thead class="thead-dark">
@@ -46,7 +47,7 @@
 
 
 										<a href="editar_producto.php?id=<?php echo $data['codproducto']; ?>" class="btn btn-success"><i class='fas fa-edit'></i></a>
-
+<a href="agregar_producto.php?id=<?php echo $data['codproducto']; ?>" class="btn btn-success"><i class="fas fa-shapes"></i></a>
 										<form action="eliminar_producto.php?id=<?php echo $data['codproducto']; ?>" method="post" class="confirmar d-inline">
 											<button class="btn btn-danger" type="submit"><i class='fas fa-trash-alt'></i> </button>
 										</form>

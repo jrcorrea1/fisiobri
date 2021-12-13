@@ -100,17 +100,37 @@ if ($result_sql == 0) {
 }
 ?>
         <!-- Begin Page Content -->
-        <div class="container-fluid">
-<h1 class="h3 mb-0 text-gray-800">Mantenimiento Cliente</h1><br>
+        <div class="card"style="left: 20px;right: -30;right: 20px;margin-right: 42px;margin-bottom: 20px">
+          <div class="card-header text-white" style="background-color: rgb(43, 167, 228);">
+            Mantenimiento de Clientes / Editar
+          </div>
+              <div class="card"style="height: 1002px;">
+                <div class="card-body">
+        	<!-- Page Heading -->
+        	<div class="col-sm-2">
+            <div class="card" style="width: 18rem;left: 10px;">
+            <img src="img/cliente.png" class="card-img-top" alt="..." style="width: 150px;margin-left: 50px;margin-top: 20px;">
+                  <div class="card-body">
+                <h5 class="card-title"><strong>Clientes</strong></h5>
+              </div>
+            </div>
+          </div>
+          <div class="card"style="margin-left: 250px;margin-right: 250px;left: 110px;padding-top: 10px;padding-bottom: 10px;bottom: 248px;">
+            <div class="card"style="left: 20px;right: -30;right: 20px;margin-right: 42px;margin-bottom: 20px">
+              <div class="card-header text-white" style="background-color: rgb(43, 167, 228);">
+                Editar
+              </div>
+              <div class="card">
+                <div class="card-body">
           <div class="row">
             <div class="col-lg-6 m-auto">
 
               <form class="" action="" method="post">
                 <?php echo isset($alert) ? $alert : ''; ?>
-                <div class="card">
-                  <div class="card-header bg-primary text-white">
-                    Editar Cliente
-                  </div>
+                <div class="card"style="
+    width: 582px;
+    right: 140px;
+">
                 <input type="hidden" name="id" value="<?php echo $idcliente; ?>">
               <div class="form-group col-md-5" style="margin-left: 0px;margin-right: 0px;padding-left: 35px;margin-top: 20px;">
                   <label for="dni">N° Cedula</label>

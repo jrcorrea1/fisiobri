@@ -12,6 +12,18 @@ $(document).ready(function(){
     $('nav ul li ul').slideUp();
     $(this).children('ul').slideToggle();
   });
+// habilitar si opcion es cheque
+  $( function() {
+    $("#formapago").change( function() {
+        if ($(this).val() === "Cheque") {
+            $("#cheque").prop("disabled", false);
+            $("#banco").prop("disabled", false);
+        } else {
+            $("#cheque").prop("disabled", true);
+            $("#banco").prop("disabled", true);
+        }
+    });
+});
 // Modal Agregar
     $('.add_product').click(function(e) {
       e.preventDefault();
@@ -123,6 +135,7 @@ $('#dni_cliente').keyup(function(e) {
       if (response == 0) {
         $('#idcliente').val('');
         $('#nom_cliente').val('');
+        $('#ape_cliente').val('');
         $('#tel_cliente').val('');
         $('#dir_cliente').val('');
         // mostar boton agregar
@@ -131,6 +144,7 @@ $('#dni_cliente').keyup(function(e) {
         var data = $.parseJSON(response);
         $('#idcliente').val(data.idcliente);
         $('#nom_cliente').val(data.nombre);
+        $('#ape_cliente').val(data.apellido);
         $('#tel_cliente').val(data.telefono);
         $('#dir_cliente').val(data.direccion);
         // ocultar boton Agregar
@@ -138,6 +152,7 @@ $('#dni_cliente').keyup(function(e) {
 
         // Bloque campos
         $('#nom_cliente').attr('disabled','disabled');
+        $('#ape_cliente').attr('disabled','disabled');
         $('#tel_cliente').attr('disabled','disabled');
         $('#dir_cliente').attr('disabled','disabled');
         // ocultar boto Guardar
@@ -162,7 +177,7 @@ $('#factura').keyup(function(e) {
     data: {action:action,factura:fa},
     success: function(response) {
       if (response == 0) {
-        $('fecha').val('');
+        $('#fecha').val('');
         $('#cliente').val('');
         $('#monto').val('');
         // mostar boton agregar
@@ -180,7 +195,174 @@ $('#factura').keyup(function(e) {
   });
 
 });
+// buscar pedido de servicio
+$('#pedido').keyup(function(e) {
+  e.preventDefault();
+  var pe = $(this).val();
+  var action = 'searchPedido';
+  $.ajax({
+    url: 'modal.php',
+    type: "POST",
+    async: true,
+    data: {action:action,pedido:pe},
+    success: function(response) {
+      if (response == 0) {
+        $('#dni').val('');
+        $('#nombre').val('');
+        $('#apellido').val('');
+        $('#telefono').val('');
+        $('#especialidad').val('');
+        $('#fecha').val('');
+        $('#hora').val('');
+        // mostar boton agregar
+      }else {
+        var data = $.parseJSON(response);
+        $('#dni').val(data.dni);
+        $('#nombre').val(data.nombre);
+        $('#apellido').val(data.apellido);
+        $('#telefono').val(data.telefono);
+        $('#especialidad').val(data.especialidad);
+        $('#fecha').val(data.fecha);
+        $('#hora').val(data.hora);
 
+        // ocultar boto Guardar
+      }
+    },
+    error: function(error) {
+
+    }
+  });
+
+});
+// buscar Cliente2
+$('#dni').keyup(function(e) {
+  e.preventDefault();
+  var cl = $(this).val();
+  var action = 'searchCli';
+  $.ajax({
+    url: 'modal.php',
+    type: "POST",
+    async: true,
+    data: {action:action,cliente:cl},
+    success: function(response) {
+      if (response == 0) {
+        $('#idcliente').val('');
+        $('#nombre').val('');
+        $('#apellido').val('');
+        $('#telefono').val('');
+        $('#direccion').val('');
+      }else {
+        var data = $.parseJSON(response);
+        $('#idcliente').val(data.idcliente);
+        $('#nombre').val(data.nombre);
+        $('#apellido').val(data.apellido);
+        $('#telefono').val(data.telefono);
+        $('#direccion').val(data.direccion);
+
+      }
+    },
+    error: function(error) {
+
+    }
+  });
+
+});
+// buscar cliente por id para pedido de delivery
+$('#cliente').keyup(function(e) {
+  e.preventDefault();
+  var cl = $(this).val();
+  var action = 'searchId';
+  $.ajax({
+    url: 'modal.php',
+    type: "POST",
+    async: true,
+    data: {action:action,cliente:cl},
+    success: function(response) {
+      if (response == 0) {
+        $('#dni').val('');
+        $('#nombre').val('');
+        $('#apellido').val('');
+        $('#ciudad').val('');
+        // mostar boton agregar
+      }else {
+        var data = $.parseJSON(response);
+        $('#dni').val(data.dni);
+        $('#nombre').val(data.nombre);
+        $('#apellido').val(data.apellido);
+        $('#ciudad').val(data.ciudad);
+        // ocultar boto Guardar
+      }
+    },
+    error: function(error) {
+
+    }
+  });
+
+});
+// buscar pedido_delivery por id para registro de delivery
+$('#nopedido').keyup(function(e) {
+  e.preventDefault();
+  var pe = $(this).val();
+  var action = 'searchPed';
+  $.ajax({
+    url: 'modal.php',
+    type: "POST",
+    async: true,
+    data: {action:action,nopedido:pe},
+    success: function(response) {
+      if (response == 0) {
+        $('#id').val('');
+        $('#fecha').val('');
+        $('#cliente').val('');
+        $('#nombre').val('');
+        $('#apellido').val('');
+        $('#ciudad').val('');
+        // mostar boton agregar
+      }else {
+        var data = $.parseJSON(response);
+        $('#id').val(data.id);
+        $('#fecha').val(data.fecha_pedido);
+        $('#cliente').val(data.cliente);
+        $('#nombre').val(data.nombre);
+        $('#apellido').val(data.apellido);
+        $('#ciudad').val(data.ciudad);
+        // ocultar boto Guardar
+      }
+    },
+    error: function(error) {
+
+    }
+  });
+
+});
+// buscar chofer por id
+$('#chofer').keyup(function(e) {
+  e.preventDefault();
+  var ch = $(this).val();
+  var action = 'searchCh';
+  $.ajax({
+    url: 'modal.php',
+    type: "POST",
+    async: true,
+    data: {action:action,chofer:ch},
+    success: function(response) {
+      if (response == 0) {
+        $('#nombre2').val('');
+        $('#apellido2').val('');
+        // mostar boton agregar
+      }else {
+        var data = $.parseJSON(response);
+        $('#nombre2').val(data.nombre);
+        $('#apellido2').val(data.apellido);
+        // ocultar boto Guardar
+      }
+    },
+    error: function(error) {
+
+    }
+  });
+
+});
 // crear cliente = Ventas
 $('#form_new_cliente_venta').submit(function(e) {
   e.preventDefault();
@@ -441,19 +623,18 @@ $('#frmChangePass').submit(function(e){
 $(".confirmar").submit(function(e) {
   e.preventDefault();
   Swal.fire({
-    title: 'Esta seguro de eliminar?',
+    title: 'Esta seguro de Anular?',
     icon: 'warning',
     showCancelButton: true,
     confirmButtonColor: '#3085d6',
     cancelButtonColor: '#d33',
-    confirmButtonText: 'SI, Eliminar!'
+    confirmButtonText: 'SI, Anular!'
   }).then((result) => {
     if (result.isConfirmed) {
       this.submit();
     }
   })
 })
-
 
 }); // fin ready
 
@@ -588,16 +769,12 @@ function sendDataProduct() {
 }
 // funcion limpiar
 function validar(){
-cobros.reset();
+form.reset();
   return false;
 }
 
 
-
-
-
-
-// funcion para elimar producto
+// funcion para eliminar producto
 function delProduct() {
   var pr = $('#producto_id').val();
   $('.alertAddProduct').html('');
@@ -626,3 +803,10 @@ function delProduct() {
   });
 
 }
+$(window).on("load",function(){
+     $(".loader-wrapper").fadeOut("slow");
+});
+
+$('#myModal').on('shown.bs.modal', function () {
+  $('#myInput').trigger('focus')
+})

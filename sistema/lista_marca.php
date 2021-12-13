@@ -1,12 +1,12 @@
 <?php include_once "includes/header.php"; ?>
 
 <!-- Begin Page Content -->
-	<div class="container-fluid">
-		<h1 class="h3 mb-0 text-gray-800" style="
-    padding-left: 20px;
-">Mantenimiento de Marca</h1><br>
+<div class="card"style="left: 20px;right: -30;right: 20px;margin-right: 42px;margin-bottom: 20px">
+	<div class="card-header text-white" style="background-color: rgb(43, 167, 228);">
+		Mantenimiento de Marcas
+	</div>
 
-	<!-- Page Heading -->
+<br>
   <div class="col-sm-2">
     <div class="card" style="width: 18rem;left: 10px;">
     <img src="img/prof.png" class="card-img-top" alt="..." style="
@@ -27,6 +27,7 @@
 						<tr>
 							<th>ID</th>
 							<th>MARCA</th>
+							<th>CATEGORIA</th>
               <th>ESTADO</th>
 							<?php if ($_SESSION['rol'] == 1) { ?>
 							<th>ACCIONES</th>
@@ -44,6 +45,7 @@
 								<tr>
 									<td><?php echo $data['id']; ?></td>
 									<td><?php echo $data['marca']; ?></td>
+									<td><?php echo $data['categoria']; ?></td>
                   <td><?php echo $data['estado']; ?></td>
 									<?php if ($_SESSION['rol'] == 1) { ?>
 									<td>

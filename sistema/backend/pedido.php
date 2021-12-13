@@ -18,6 +18,7 @@ if ($_SESSION['idUser']) {
         $sucursal = $_POST['sucursal_id'];
         $usuario_id = $_SESSION['idUser'];
         $fecha = date("Y-m-d H:i:s");
+        $estado = "Pendiente";
 
 
 
@@ -26,8 +27,8 @@ if ($_SESSION['idUser']) {
 
 
             $sql = 'INSERT INTO pedido_compra
-                (id, fecha, proveedor_id, sucursa_id, usuario_id)
-					VALUES (:id, :fecha, :proveedor_id, :sucursa_id, :usuario_id)';
+                (id, fecha, proveedor_id, sucursa_id, usuario_id, estado)
+					VALUES (:id, :fecha, :proveedor_id, :sucursa_id, :usuario_id, :estado)';
             $stmt = $dbconn->prepare($sql);
             // pass values to the statement
             $stmt->bindValue(':id', $pedido);
@@ -35,6 +36,7 @@ if ($_SESSION['idUser']) {
             $stmt->bindValue(':proveedor_id', $proveedor);
             $stmt->bindValue(':sucursa_id', $sucursal);
             $stmt->bindValue(':usuario_id', $usuario_id);
+            $stmt->bindValue(':estado', $estado);
             // execute and get number of affected rows
             $result = $stmt->execute();
             $message = $result ? "Se inserto" : "Ocurrio un error intentado resolver la solicitud, " .
@@ -52,21 +54,20 @@ if ($_SESSION['idUser']) {
         }
     } else if (isset($_POST['accion']) and $_POST['accion'] == "modificapedido") {
         $result = 0;
-        $pedido = $_POST['id'];
+        $pedido = $_POST['pedido'];    
         $proveedor = $_POST['codproveedor'];
         $sucursal = $_POST['sucursal_id'];
         $usuario_id = $_SESSION['idUser'];
-        $fecha = $_POST['vped_fecha'];
+       
 
         try {
 
             $sql = 'UPDATE pedido_compra
-                    SET fecha = :fecha, proveedor_id = :proveedor_id, sucursa_id = :sucursa_id, usuario_id = :usuario_id
+                    SET proveedor_id = :proveedor_id, sucursa_id = :sucursa_id, usuario_id = :usuario_id
                     WHERE id = :id';
             $stmt = $dbconn->prepare($sql);
             // pass values to the statement
-            $stmt->bindValue(':id', $pedido);
-            $stmt->bindValue(':fecha', $fecha);
+            $stmt->bindValue(':id', $pedido);          
             $stmt->bindValue(':proveedor_id', $proveedor);
             $stmt->bindValue(':sucursa_id', $sucursal);
             $stmt->bindValue(':usuario_id', $usuario_id);
