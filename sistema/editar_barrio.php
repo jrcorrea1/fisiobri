@@ -47,7 +47,7 @@ if (empty($_REQUEST['id'])) {
 }
 $idbarrio = $_REQUEST['id'];
 $sql = mysqli_query($conexion, "SELECT * FROM barrio WHERE id = $idbarrio");
-mysqli_close($conexion);
+
 $result_sql = mysqli_num_rows($sql);
 if ($result_sql == 0) {
   header("Location: lista_barrio.php");
@@ -57,6 +57,7 @@ if ($result_sql == 0) {
     $barrio = $data['barrio'];
     $ciudad = $data['ciudad'];
     $departamento = $data['departamento'];
+    $estado  = $data['estado'];
   }
 }
 ?>
@@ -79,15 +80,15 @@ if ($result_sql == 0) {
                 <input type="hidden" name="id" value="<?php echo $idbarrio; ?>">
                 <div class="form-group">
                   <label for="barrio">Barrio</label>
-                  <input type="text" placeholder="Ingrese barrio" name="barrio" class="form-control" id="barrio" value="<?=$barrio; ?>">
+                  <input type="text" placeholder="Ingrese barrio" name="barrio" class="form-control" id="barrio" value="<?= $barrio; ?>">
                 </div>
                 <div class="form-group">
                   <label for="barrio">Departamento</label>
-                  <input type="text" placeholder="Ingrese barrio" name="depa" class="form-control" id="depa" value="<?= $departamento; ?>">
+                  <input type="text" placeholder="Ingrese barrio" name="depa" class="form-control" id="depa" value="<?= $departamento; ?>" readonly>
                 </div>
                 <div class="form-group">
                   <label for="barrio">Ciudad</label>
-                  <input type="text" placeholder="Ingrese barrio" name="ciu" class="form-control" id="ciu" value="<?= $ciudad; ?>">
+                  <input type="text" placeholder="Ingrese barrio" name="ciu" class="form-control" id="ciu" value="<?= $ciudad; ?>" readonly>
                 </div>
                 <div class="form-group">
                   <label for="barrio">Departamento</label>
@@ -95,15 +96,14 @@ if ($result_sql == 0) {
                     <option value="">--- Seleccionar ---</option>
                     <?php
                     foreach ($departamentos as $dep) {
-                      $selected = ($dep['departamento'] == $departamento) ? "selected" : null;
-                      echo '<option value="' . $dep['departamento'] . '" ' . $selected . '>' . $dep['departamento'] . '</option>';
+                      echo '<option value="' . $dep['departamento'] . '">' . $dep['departamento'] . '</option>';
                     } ?>
                   </select>
                 </div>
                 <div class="form-group">
                   <label for="barrio">Ciudad</label>
                   <select class="form-control seleccion" style="width: 100%;" id="ciudad" name="ciudad">
-                    <option value="">--- Seleccionar ---</option>                   
+                    <option value="">--- Seleccionar ---</option>
                   </select>
                 </div>
                 <div class="row">
@@ -129,10 +129,11 @@ if ($result_sql == 0) {
 
     <script type="text/javascript">
       $(document).ready(function() {
-        $('.seleccion').select2();     
-  
+        $('.seleccion').select2();
 
-        $('#departamento').change(function() { 
+
+
+        $('#departamento').change(function() {
           if ($(this).val() != "") {
             console.log($(this).val());
             $.ajax({
@@ -140,7 +141,7 @@ if ($result_sql == 0) {
               method: 'POST',
               data: {
                 'accion': 'listarCiudad',
-                'departamento': '<?=$departamento; ?>'
+                'departamento': '<?= $departamento; ?>'
               },
               success: function(data) {
 
@@ -182,6 +183,5 @@ if ($result_sql == 0) {
         });
       });
 
-      
-      $('#departamento').change();
+      $('#estado').val('<?= $estado; ?>');
     </script>

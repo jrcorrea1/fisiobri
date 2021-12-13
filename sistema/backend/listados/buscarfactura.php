@@ -75,7 +75,7 @@ if ($_SESSION['idUser']) {
       $row['cliente'] = $cliente;
       $row['monto'] = $factura['totalfactura'];
       $row['usuario'] = $factura['usuario'];
-      $row['sucursal'] = $factura['sucursal'];
+    
       $row['usuario'] = $factura['nombre'];
       $row['estado'] = $factura['estado'];
       array_push($data, $row);
