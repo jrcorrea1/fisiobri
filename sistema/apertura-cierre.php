@@ -7,11 +7,8 @@
   <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800"><strong>Apertura y Cierre de Caja</strong></h1>
   </div>
-
-
-  <!-- DataTales Example -->
-  <div class="card shadow mb-4">
-    <div class="card-header py-3">
+  <div class="card">
+  <div class="card-header py-3">
       <div class="float-left">
         <h6 class="m-0 font-weight-bold text-primary">Tabla</h6>
       </div>
@@ -21,35 +18,129 @@
         </button>
       </div>
     </div>
-    <div class="card-body" style="font-size: 13px">
-      <div class="table-responsive">
-        <table id="listado" class="table table-striped table-bordered">
-          <thead class="thead-dark">
-            <tr>
-              <th>ID</th>
-              <th>Fecha Apertura</th>
-              <th>Monto Apertura</th>
-              <th>Fecha Cierre</th>
-              <th>Monto Cierre</th>
-              <th>Estado</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tfoot class="thead-dark">
-            <tr>
-              <th>ID</th>
-              <th>Fecha Apertura</th>
-              <th>Monto Apertura</th>
-              <th>Fecha Cierre</th>
-              <th>Monto Cierre</th>
-              <th>Estado</th>
-              <th>Acciones</th>
-            </tr>
-          </tfoot>
-        </table>
+    <div class="card-header ui-sortable-handle" style="cursor: move;">      
+      <div class="card-tools">
+        <ul class="nav nav-pills ml-auto">
+          <li class="nav-item">
+            <a class="nav-link active" href="#revenue-chart" data-toggle="tab">Movimientos de Caja</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#sales-chart" data-toggle="tab">Historial</a>
+          </li>
+        </ul>
       </div>
-    </div>
+    </div><!-- /.card-header -->
+    <div class="card-body">
+      <div class="tab-content p-0">
+        <!-- Morris chart - Sales -->
+        <div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: 450;">
+          <div class="chartjs-size-monitor">
+            <div class="chartjs-size-monitor-expand">
+            <div class="table-responsive">
+										<table class="table table-xxs">
+											<tbody>
+												<tr>
+													<td><i class="icon-square" style="color:#37474F;" aria-hidden="true"></i></td>
+													<td class="text-grey-800"><left>MONTO INICIAL</left> <a data-toggle="modal" data-target=".bs-example-modal-sm" style="color:#5b5d5f"></a></td>
+													<td></td>
+													<td id="inicial" class="text-right"> Gs. 0</td>
+												</tr>
+												<tr>
+													<td><i class="icon-square" style="color:#5cb85c;" aria-hidden="true"></i></td>
+													<td class="text-teal"><left>INGRESOS</left> <a data-toggle="modal" data-target=".bs-example-modal-sm" style="color:#5b5d5f"> </a></td>
+													<td></td>
+													<td id="ingresos" class="text-right">Gs. 0</td>
+												</tr>
+												<tr>
+													<td><i class="icon-square" style="color:#e9573f;" aria-hidden="true"></i></td>
+													<td><left>DEVOLUCIONES</left></td>
+													<td></td>
+													<td id="devoluciones" class="text-right">Gs. 0</td>
+												</tr>											
+
+												<tr>
+													<td><i class="icon-square" style="color:#63d3e9;" aria-hidden="true"></i></td>
+													<td class=" "><left>GASTOS</left></td>
+													<td></td>
+													<td id="gastos" class="text-right">Gs. 0</td>
+												</tr>
+												<tr class="">
+													<th class=""></th>
+													<th class="text-success "><h5><left><strong>INGRESOS TOTALES</strong></left></h5></th>
+													<th class=""></th>
+													<th class="text-right text-success"><h5><strong id="Ingresos">Gs. 0</strong></h5></th>
+												</tr>
+												<tr class="">
+													<th class=""></th>
+													<th class="text-danger "><h5><left><strong>EGRESOS TOTALES</strong></left></h5></th>
+													<th class=""></th>
+													<th class="text-right text-danger"><h5><strong id="Egresos">Gs. 0</strong></h5></th>
+												</tr>
+												<tr class="">
+													<td class=""></td>
+													<td class=""><h5><left><strong>SALDO</strong></left></h5></td>
+													<th class=""></th>
+													<th class="text-right"><h5><strong id="Saldo">Gs. 0</strong></h5></th>
+												</tr>
+												<tr class="">
+													<td class=""></td>
+													<td class="text-info"><h5><left><strong>MONTO INICIAL + SALDO </strong></left></h5></td>
+													<th class=""></th>
+													<th class="text-right text-info"><h5><strong id="Diferencia">Gs. 0</strong></h5></th>
+												</tr>
+											</tbody>
+										</table>
+									 </div>
+            </div>
+            <div class="chartjs-size-monitor-shrink">
+              <div class=""></div>
+            </div>
+          </div>
+         
+        </div>
+        <div class="chart tab-pane" id="sales-chart" style="position: relative; height: 450;">
+         
+            <div class="table-responsive">
+              <table id="listado" class="table table-striped table-bordered dt-responsive nowrap" width="100%" cellspacing="0">
+                <thead class="thead-dark">
+                  <tr>
+                    <th>ID</th>
+                    <th>Fecha Apertura</th>
+                    <th>Monto Apertura</th>
+                    <th>Fecha Cierre</th>
+                    <th>Monto Cierre</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tfoot class="thead-dark">
+                  <tr>
+                    <th>ID</th>
+                    <th>Fecha Apertura</th>
+                    <th>Monto Apertura</th>
+                    <th>Fecha Cierre</th>
+                    <th>Monto Cierre</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                  </tr>
+                </tfoot>
+              </table>
+            
+          </div>
+         
+        </div>
+      </div>
+    </div><!-- /.card-body -->
   </div>
+
+  <!-- DataTales Example -->
+  <div class="card shadow mb-4">
+   
+
+
+  </div>
+
+
 
 
 
@@ -116,16 +207,16 @@
               response = JSON.parse(data);
               if (response.status == "success") {
                 setTimeout(function() {
-                    Swal.fire({
-                      title: 'Exito',
-                      text: "Cierre de Caja Exitosa",
-                      icon: 'success',
-                      confirmButtonText: 'OK',
+                  Swal.fire({
+                    title: 'Exito',
+                    text: "Cierre de Caja Exitosa",
+                    icon: 'success',
+                    confirmButtonText: 'OK',
 
-                    }).then((result) => {
-                      location.reload();
-                    });
-                  }, 2000);
+                  }).then((result) => {
+                    location.reload();
+                  });
+                }, 2000);
               } else {
                 Swal.fire({
                   title: 'Advertencia',

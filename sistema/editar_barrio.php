@@ -141,7 +141,7 @@ if ($result_sql == 0) {
               method: 'POST',
               data: {
                 'accion': 'listarCiudad',
-                'departamento': '<?= $departamento; ?>'
+                'departamento':  $('#departamento').val()
               },
               success: function(data) {
 
