@@ -82,6 +82,8 @@ if ($_SESSION['idUser']) {
             $stmt3->bindParam(':id', $pedido);
             $stmt3->execute();
 
+            
+
 
        
 

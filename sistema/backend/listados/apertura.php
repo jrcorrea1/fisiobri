@@ -5,25 +5,31 @@ include('../../../conexion.php');
 include('../../core/config.php');
 $dbconn = getConnection();
 
+
+
 // Check if user is logged
 if ($_SESSION['idUser']) {
+
 
   /****** BEGIN - VARIABLES DEFINITION ******/
   $request = $_REQUEST;
   $recordsTotal = 0;
   $recordsFiltered = 0;
-  $column = array(); // array de columnas de la tabla
-  $column[0] = "id_caja";
-  $column[1] = "fecha_apertura";
-  $column[2] = "monto_apertura";
-  $column[3] = "fecha_cierre";
-  $column[4] = "monto_cierre";
-  $column[5] = "estado";
+  //$des = $_GET['nombre'];
+
+
+
+
   /****** FINISH - VARIABLES DEFINITION ******/
 
   /****** BEGIN - FOR PAGINATION ******/
   // GET TOTAL
-  $sql_total = "SELECT count(*) as total FROM apertura_cierre WHERE 1=1"; // obtener todos los usuarios que no tengan rol administrador
+  $sql_total = "SELECT count(*) as total FROM apertura_cierre WHERE 1=1"; 
+
+  //if (!empty($des)) {
+ //   $sql_total .= " AND barrio LIKE '%$des%'";
+ // }
+
 
   $query_total = $dbconn->query($sql_total);
   $result_total = $query_total->fetch(PDO::FETCH_ASSOC);
@@ -32,14 +38,10 @@ if ($_SESSION['idUser']) {
   /****** FINISH - FOR PAGINATION ******/
 
   /****** BEGIN - TABLE RECORDS AND FILTERING ******/
-  $sql = 'SELECT id_caja, fecha_apertura, monto_apertura, fecha_cierre, monto_cierre, estado FROM apertura_cierre WHERE 1=1'; // obtener todos los usuarios que no tengan rol administrador
+  $sql = "SELECT id_caja, fecha_apertura, monto_apertura, fecha_cierre, monto_cierre, estado, monto_efectivo, monto_tarjeta, monto_cheque FROM apertura_cierre WHERE 1=1";
 
-  // SEARCH
- 
-  // ORDER
-  if (isset($request['order'][0]['column'])) {
-    $sql .= " ORDER BY " . $column[$request['order'][0]['column']] . " " . $request['order'][0]['dir'];
-  }
+
+
   // LIMIT
   if (isset($request['start'])) {
     $sql .= " LIMIT " . $request['length'] . " OFFSET " . $request['start'];
@@ -57,6 +59,7 @@ if ($_SESSION['idUser']) {
     // RESULT TRUE
     $result = TRUE;
     foreach ($apertura as $caja) {
+ 
       // SETTING UP COLUMNS FOR TABLE
       $row = array();
       $fecha_apertura = empty($caja['fecha_apertura']) ? null : date("d/m/Y", strtotime($caja['fecha_apertura']));
@@ -68,7 +71,10 @@ if ($_SESSION['idUser']) {
       $row['fecha_cierre'] = $fecha_cierre;
       $row['monto_cierre'] = $caja['monto_cierre'];
       $row['estado'] = $caja['estado'] == 1 ? "Abierta" : "Cerrada";
-      array_push($data, $row);
+      $row['monto_efectivo'] = $caja['monto_efectivo'];
+      $row['monto_tarjeta'] = $caja['monto_tarjeta'];
+      $row['monto_cheque'] = $caja['monto_cheque'];
+      array_push($data, $row);      
     }
   }
 
@@ -82,10 +88,11 @@ if ($_SESSION['idUser']) {
       "draw" => intval($request['draw']),
       "recordsTotal" => $recordsTotal,
       "recordsFiltered" => $recordsFiltered,
-      "data" => $data
+      "data" => $data   
     )
   );
 } else // NOT LOGGED
 {
   print json_encode(array("status" => "error", "message" => "No autorizado"));
 }
+?>

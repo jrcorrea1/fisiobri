@@ -1,4 +1,41 @@
-<?php include_once "includes/header.php"; ?>
+<?php include_once "includes/header.php";
+include "../conexion.php";
+include('core/config.php');
+$dbconn = getConnection();
+
+
+
+
+// preguntamos si hay caja abierta
+$stmt = $dbconn->query("SELECT * FROM apertura_cierre WHERE usuario_id=" . $_SESSION['idUser'] . " AND estado = 1 ORDER BY id_caja DESC LIMIT 1");
+$caja = $stmt->fetch(PDO::FETCH_OBJ);
+
+
+$id_caja = $caja ? $caja->id_caja : 0;
+$monto_inicial = $caja ? $caja->monto_apertura : 0;
+// sumamos todos los movimientos de caja
+$stmt = $dbconn->query("SELECT SUM(monto) AS total FROM cobros WHERE id_apertura = $id_caja");
+$cobros = $stmt->fetch(PDO::FETCH_OBJ);
+$total_cobros = $caja ? $cobros->total : 0;
+
+// sumamos todos los movimientos de caja efectivo
+$stmt = $dbconn->query("SELECT SUM(monto) AS total FROM cobros WHERE formacobro='Efectivo' AND id_apertura = $id_caja");
+$cobrose = $stmt->fetch(PDO::FETCH_OBJ);
+$total_efectivo = $caja ? $cobrose->total : 0;
+
+// sumamos todos los movimientos de caja tarjeta
+$stmt = $dbconn->query("SELECT SUM(monto) AS total FROM cobros WHERE formacobro='Tarjeta' AND id_apertura = $id_caja");
+$cobrost = $stmt->fetch(PDO::FETCH_OBJ);
+$total_tarjeta = $caja ? $cobrost->total : 0;
+
+// sumamos todos los movimientos de caja cheque
+$stmt = $dbconn->query("SELECT SUM(monto) AS total FROM cobros WHERE formacobro='Cheque' AND id_apertura = $id_caja");
+$cobrosc = $stmt->fetch(PDO::FETCH_OBJ);
+$total_cheque = $caja ? $cobrosc->total : 0;
+
+$total = $caja ? $monto_inicial + $total_cobros : 0;
+
+?>
 
 <!-- Begin Page Content -->
 <div class="container-fluid">
@@ -8,17 +45,20 @@
     <h1 class="h3 mb-0 text-gray-800"><strong>Apertura y Cierre de Caja</strong></h1>
   </div>
   <div class="card">
-  <div class="card-header py-3">
+    <div class="card-header py-3">
       <div class="float-left">
-        <h6 class="m-0 font-weight-bold text-primary">Tabla</h6>
+        <h6 class="m-0 font-weight-bold text-primary"></h6>
       </div>
       <div class="float-right">
         <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-datos">
           Abrir Caja
         </button>
+        <button type="button" onclick="cierre(<?= $id_caja; ?>);" class="btn btn-warning">
+          Cerrar Caja
+        </button>
       </div>
     </div>
-    <div class="card-header ui-sortable-handle" style="cursor: move;">      
+    <div class="card-header ui-sortable-handle" style="cursor: move;">
       <div class="card-tools">
         <ul class="nav nav-pills ml-auto">
           <li class="nav-item">
@@ -36,98 +76,134 @@
         <div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: 450;">
           <div class="chartjs-size-monitor">
             <div class="chartjs-size-monitor-expand">
-            <div class="table-responsive">
-										<table class="table table-xxs">
-											<tbody>
-												<tr>
-													<td><i class="icon-square" style="color:#37474F;" aria-hidden="true"></i></td>
-													<td class="text-grey-800"><left>MONTO INICIAL</left> <a data-toggle="modal" data-target=".bs-example-modal-sm" style="color:#5b5d5f"></a></td>
-													<td></td>
-													<td id="inicial" class="text-right"> Gs. 0</td>
-												</tr>
-												<tr>
-													<td><i class="icon-square" style="color:#5cb85c;" aria-hidden="true"></i></td>
-													<td class="text-teal"><left>INGRESOS</left> <a data-toggle="modal" data-target=".bs-example-modal-sm" style="color:#5b5d5f"> </a></td>
-													<td></td>
-													<td id="ingresos" class="text-right">Gs. 0</td>
-												</tr>
-												<tr>
-													<td><i class="icon-square" style="color:#e9573f;" aria-hidden="true"></i></td>
-													<td><left>DEVOLUCIONES</left></td>
-													<td></td>
-													<td id="devoluciones" class="text-right">Gs. 0</td>
-												</tr>											
+              <div class="table-responsive">
+                <table class="table table-xxs">
+                  <tbody>
+                    <tr>
+                      <td><i class="icon-square" style="color:#37474F;" aria-hidden="true"></i></td>
+                      <td class="text-grey-800">
+                        <left>MONTO INICIAL</left> <a data-toggle="modal" data-target=".bs-example-modal-sm" style="color:#5b5d5f"></a>
+                      </td>
+                      <td></td>
+                      <td id="inicial" class="text-right"> Gs. <?php echo $monto_inicial; ?> </td>
+                    </tr>
+                    <tr>
+                      <td><i class="icon-square" style="color:#5cb85c;" aria-hidden="true"></i></td>
+                      <td class="text-teal">
+                        <left>INGRESOS EFECTIVO</left> <a data-toggle="modal" data-target=".bs-example-modal-sm" style="color:#5b5d5f"> </a>
+                      </td>
+                      <td></td>
+                      <td id="ingresos" class="text-right">Gs. <?php echo $total_efectivo; ?></td>
+                    </tr>
+                    <tr>
+                      <td><i class="icon-square" style="color:#5cb85c;" aria-hidden="true"></i></td>
+                      <td class="text-teal">
+                        <left>INGRESOS TARJETA</left> <a data-toggle="modal" data-target=".bs-example-modal-sm" style="color:#5b5d5f"> </a>
+                      </td>
+                      <td></td>
+                      <td id="ingresos" class="text-right">Gs. <?php echo $total_tarjeta; ?></td>
+                    </tr>
+                    <tr>
+                      <td><i class="icon-square" style="color:#5cb85c;" aria-hidden="true"></i></td>
+                      <td class="text-teal">
+                        <left>INGRESOS CHEQUE</left> <a data-toggle="modal" data-target=".bs-example-modal-sm" style="color:#5b5d5f"> </a>
+                      </td>
+                      <td></td>
+                      <td id="ingresos" class="text-right">Gs. <?php echo $total_cheque; ?></td>
+                    </tr>
+                    <tr>
+                      <td><i class="icon-square" style="color:#e9573f;" aria-hidden="true"></i></td>
+                      <td>
+                        <left>DEVOLUCIONES</left>
+                      </td>
+                      <td></td>
+                      <td id="devoluciones" class="text-right">Gs. 0</td>
+                    </tr>
 
-												<tr>
-													<td><i class="icon-square" style="color:#63d3e9;" aria-hidden="true"></i></td>
-													<td class=" "><left>GASTOS</left></td>
-													<td></td>
-													<td id="gastos" class="text-right">Gs. 0</td>
-												</tr>
-												<tr class="">
-													<th class=""></th>
-													<th class="text-success "><h5><left><strong>INGRESOS TOTALES</strong></left></h5></th>
-													<th class=""></th>
-													<th class="text-right text-success"><h5><strong id="Ingresos">Gs. 0</strong></h5></th>
-												</tr>
-												<tr class="">
-													<th class=""></th>
-													<th class="text-danger "><h5><left><strong>EGRESOS TOTALES</strong></left></h5></th>
-													<th class=""></th>
-													<th class="text-right text-danger"><h5><strong id="Egresos">Gs. 0</strong></h5></th>
-												</tr>
-												<tr class="">
-													<td class=""></td>
-													<td class=""><h5><left><strong>SALDO</strong></left></h5></td>
-													<th class=""></th>
-													<th class="text-right"><h5><strong id="Saldo">Gs. 0</strong></h5></th>
-												</tr>
-												<tr class="">
-													<td class=""></td>
-													<td class="text-info"><h5><left><strong>MONTO INICIAL + SALDO </strong></left></h5></td>
-													<th class=""></th>
-													<th class="text-right text-info"><h5><strong id="Diferencia">Gs. 0</strong></h5></th>
-												</tr>
-											</tbody>
-										</table>
-									 </div>
+
+                    <tr class="">
+                      <th class=""></th>
+                      <th class="text-success ">
+                        <h5>
+                          <left><strong>INGRESOS TOTALES</strong></left>
+                        </h5>
+                      </th>
+                      <th class=""></th>
+                      <th class="text-right text-success">
+                        <h5><strong id="Ingresos">Gs. <?php echo $total_cobros; ?></strong></h5>
+                      </th>
+                    </tr>
+
+                    <tr class="">
+                      <td class=""></td>
+                      <td class="">
+                        <h5>
+                          <left><strong>SALDO</strong></left>
+                        </h5>
+                      </td>
+                      <th class=""></th>
+                      <th class="text-right">
+                        <h5><strong id="Saldo">Gs. 0</strong></h5>
+                      </th>
+                    </tr>
+                    <tr class="">
+                      <td class=""></td>
+                      <td class="text-info">
+                        <h5>
+                          <left><strong>MONTO INICIAL + SALDO </strong></left>
+                        </h5>
+                      </td>
+                      <th class=""></th>
+                      <th class="text-right text-info">
+                        <h5><strong id="Diferencia">Gs. <?php echo $total; ?></strong></h5>
+                      </th>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
             <div class="chartjs-size-monitor-shrink">
               <div class=""></div>
             </div>
           </div>
-         
+
         </div>
         <div class="chart tab-pane" id="sales-chart" style="position: relative; height: 450;">
-         
-            <div class="table-responsive">
-              <table id="listado" class="table table-striped table-bordered dt-responsive nowrap" width="100%" cellspacing="0">
-                <thead class="thead-dark">
-                  <tr>
-                    <th>ID</th>
-                    <th>Fecha Apertura</th>
-                    <th>Monto Apertura</th>
-                    <th>Fecha Cierre</th>
-                    <th>Monto Cierre</th>
-                    <th>Estado</th>
-                    <th>Acciones</th>
-                  </tr>
-                </thead>
-                <tfoot class="thead-dark">
-                  <tr>
-                    <th>ID</th>
-                    <th>Fecha Apertura</th>
-                    <th>Monto Apertura</th>
-                    <th>Fecha Cierre</th>
-                    <th>Monto Cierre</th>
-                    <th>Estado</th>
-                    <th>Acciones</th>
-                  </tr>
-                </tfoot>
-              </table>
-            
+
+          <div class="table-responsive">
+            <table id="listado" class="table table-striped table-bordered dt-responsive nowrap" width="100%" cellspacing="0">
+              <thead class="thead-dark">
+                <tr>
+                  <th>ID</th>
+                  <th>Fecha Apertura</th>
+                  <th>Monto Apertura</th>
+                  <th>Fecha Cierre</th>
+                  <th>Monto Cierre</th>
+                  <th>Monto Efectivo</th>
+                  <th>Monto Tarjeta</th>
+                  <th>Monto Cheque</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tfoot class="thead-dark">
+                <tr>
+                  <th>ID</th>
+                  <th>Fecha Apertura</th>
+                  <th>Monto Apertura</th>
+                  <th>Fecha Cierre</th>
+                  <th>Monto Cierre</th>
+                  <th>Monto Efectivo</th>
+                  <th>Monto Tarjeta</th>
+                  <th>Monto Cheque</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </tfoot>
+            </table>
+
           </div>
-         
+
         </div>
       </div>
     </div><!-- /.card-body -->
@@ -135,7 +211,7 @@
 
   <!-- DataTales Example -->
   <div class="card shadow mb-4">
-   
+
 
 
   </div>
@@ -198,10 +274,18 @@
       cierre = function(caja) {
         event.preventDefault();
         // resto de tu codigo
+        datos = {
+          accion: "cierre",
+          caja: caja,
+          monto_efectivo: <?= $total_efectivo; ?>,
+          monto_tarjeta: <?= $total_tarjeta; ?>,
+          monto_cheque: <?= $total_cheque; ?>,
+          monto_cierre: <?= $total; ?>,
+        }
         $.ajax({
           url: './backend/apertura.php',
           method: 'POST',
-          data: "accion=cierre&id_caja=" + caja,
+          data: datos,
           success: function(data) {
             try {
               response = JSON.parse(data);
@@ -243,6 +327,11 @@
             });
           }
         });
+      }
+
+      imprimir = function(caja) {
+        parameters = "?caja=" + caja;
+        window.open("./factura/movimientocaja.php" + parameters, "_blank");
       }
 
       $('#form_datos').submit(function(e) {
@@ -365,6 +454,15 @@
             "data": "monto_cierre"
           },
           {
+            "data": "monto_efectivo"
+          },
+          {
+            "data": "monto_tarjeta"
+          },
+          {
+            "data": "monto_cheque"
+          },
+          {
             "data": "estado"
           },
           {
@@ -374,10 +472,10 @@
         "columnDefs": [{
           "render": function(number_row, type, row) {
             return '<button class="btn btn-warning btn-user btn-block" ' +
-              'onclick="cierre(' + row.id + ');">Cerrar</button>';
+              'onclick="imprimir(' + row.id + ');">Imprimir</button>';
           },
           "orderable": false,
-          "targets": 6 // columna modificar usuario
+          "targets": 9 // columna modificar usuario
         }],
         "language": {
           "decimal": "",

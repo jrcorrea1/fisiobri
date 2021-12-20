@@ -51,24 +51,7 @@ if ($_POST['action'] == 'searchCliente') {
   }
   exit;
 }
-// Buscar factura
-if ($_POST['action'] == 'searchFactura') {
-  if (!empty($_POST['factura'])) {
-    $noFactura = $_POST['factura'];
 
-    $query = mysqli_query($conexion, "SELECT * FROM factura WHERE noFactura LIKE '$noFactura'");
-    mysqli_close($conexion);
-    $result = mysqli_num_rows($query);
-    $data = '';
-    if ($result > 0) {
-      $data = mysqli_fetch_assoc($query);
-    }else {
-      $data = 0;
-    }
-    echo json_encode($data,JSON_UNESCAPED_UNICODE);
-  }
-  exit;
-}
 // Buscar pedido_servicio
 if ($_POST['action'] == 'searchPedido') {
   if (!empty($_POST['pedido'])) {

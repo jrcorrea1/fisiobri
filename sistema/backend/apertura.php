@@ -67,38 +67,33 @@ if ($_SESSION['idUser']) {
     else if (isset($_POST['accion']) and $_POST['accion'] == "cierre") {
 
 
-        $id_caja = $_POST['id_caja'];
+        $id_caja = $_POST['caja'];
         $fecha_cierre = date("Y-m-d H:i:s");
-
-
+        $monto_cierre = $_POST['monto_cierre'];
+        $monto_efectivo = $_POST['monto_efectivo'];
+        $monto_tarjeta = $_POST['monto_tarjeta'];
+        $monto_cheque = $_POST['monto_cheque'];
         $usuario_id = $_SESSION['idUser'];
 
-        //consultamos todos los cobros realizados por id de caja
-        $sql = "SELECT monto FROM cobros WHERE id_apertura = '" . $id_caja . "'";
-        $stmt3 = $dbconn->query($sql);
-        $cobros = $stmt3->fetchAll(PDO::FETCH_ASSOC);
-
-        // sumamos los cobros
-        $totalCobros = 0;
-        foreach ($cobros as $cobro) {
-            $totalCobros += $cobro['monto'];
-        }
-
-        // consultamos monto de apertura
-        $sql = "SELECT monto_apertura FROM apertura_cierre WHERE id_caja = '" . $id_caja . "'";
-        $stmt4 = $dbconn->query($sql);
-        $apertura = $stmt4->fetch(PDO::FETCH_ASSOC);
-
-        $total = $totalCobros + $apertura['monto_apertura'];
-
+        
 
         try {
 
-            $sql = 'UPDATE apertura_cierre SET estado = false, fecha_cierre = :fecha_cierre, monto_cierre = :monto_cierre, estado=false WHERE id_caja = :id_caja';
+            $sql = "UPDATE apertura_cierre SET 
+            fecha_cierre = :fecha_cierre,
+            monto_cierre = :monto_cierre,
+            estado=false,
+            monto_efectivo = :monto_efectivo,
+            monto_tarjeta = :monto_tarjeta,
+            monto_cheque = :monto_cheque
+            WHERE id_caja = :id_caja";
             $stmt = $dbconn->prepare($sql);
             $stmt->bindParam(':id_caja', $id_caja);
             $stmt->bindParam(':fecha_cierre', $fecha_cierre);
-            $stmt->bindParam(':monto_cierre', $total);
+            $stmt->bindParam(':monto_cierre', $monto_cierre);
+            $stmt->bindParam(':monto_efectivo', $monto_efectivo);
+            $stmt->bindParam(':monto_tarjeta', $monto_tarjeta);
+            $stmt->bindParam(':monto_cheque', $monto_cheque);
             $result = $stmt->execute();
             $message = $result ? "Se inserto" : "Ocurrio un error intentado resolver la solicitud, " .
                 "por favor complete todos los campos o recargue de vuelta la pagina ";

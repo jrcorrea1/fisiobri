@@ -34,7 +34,7 @@ if ($_SESSION['idUser']) {
   /****** FINISH - FOR PAGINATION ******/
 
   /****** BEGIN - TABLE RECORDS AND FILTERING ******/
-  $sql = "SELECT id, factura, fecha, cliente, monto, formacobro, cheque, banco, id_apertura  from cobros
+  $sql = "SELECT id, factura, fechacobro, cliente, monto, formacobro, cheque, banco, id_apertura  from cobros
   WHERE 1=1";
 
 
@@ -60,7 +60,7 @@ if ($_SESSION['idUser']) {
  
       // SETTING UP COLUMNS FOR TABLE
       $row = array();
-      $fecha = empty($cobro['fecha']) ? null : date("d/m/Y", strtotime($cobro['fecha']));
+      $fecha = empty($cobro['fechacobro']) ? null : date("d/m/Y", strtotime($cobro['fechacobro']));
 
       $row['id'] = $cobro['id'];
       $row['factura'] = $cobro['factura'];

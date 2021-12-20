@@ -165,36 +165,7 @@ $('#dni_cliente').keyup(function(e) {
   });
 
 });
-// buscar factura
-$('#factura').keyup(function(e) {
-  e.preventDefault();
-  var fa = $(this).val();
-  var action = 'searchFactura';
-  $.ajax({
-    url: 'modal.php',
-    type: "POST",
-    async: true,
-    data: {action:action,factura:fa},
-    success: function(response) {
-      if (response == 0) {
-        $('#fecha').val('');
-        $('#cliente').val('');
-        $('#monto').val('');
-        // mostar boton agregar
-      }else {
-        var data = $.parseJSON(response);
-        $('#fecha').val(data.fecha);
-        $('#cliente').val(data.codcliente);
-        $('#monto').val(data.totalfactura);
-        // ocultar boto Guardar
-      }
-    },
-    error: function(error) {
 
-    }
-  });
-
-});
 // buscar pedido de servicio
 $('#pedido').keyup(function(e) {
   e.preventDefault();

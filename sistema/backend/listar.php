@@ -63,6 +63,28 @@ if ($_SESSION['idUser']) {
 				echo "Error al buscar $e";
 			}
 		}
+	} // Check if the form was sent and the action is factura
+	else if (isset($_POST['accion']) and $_POST['accion'] == "searchfactura" and $_POST['factura']) {
+		$factura = $_POST['factura'];
+		// prepare statement for select
+		$stmt = $dbconn->prepare('SELECT f.nofactura, f.fecha, c.nombre, c.apellido, f.totalfactura as monto
+		 FROM factura as f INNER JOIN cliente as c ON f.codcliente = c.idcliente WHERE nofactura = :nofactura');
+		// bind value to the :id parameter
+		$stmt->bindValue(':nofactura', $factura);
+		// execute the statement
+		$stmt->execute();
+		// return the result set as an object
+		$factura = $stmt->fetch(PDO::FETCH_ASSOC);
+
+		if ($factura == FALSE) {
+			$result = FALSE;
+		} else {
+			$result = TRUE;
+		}
+		$message = $result ? "success" : "Ocurrio un error intentado resolver la solicitud, por favor complete todos los campos o recargue de vuelta la pagina";
+
+		$status = $result ? "success" : "error";
+		print json_encode(array("status" => $status, "message" => $message, "factura" => $factura));
 	} else // FORM NOT SENT
 	{
 		print json_encode(array("status" => "error", "message" => "Formulario no enviado"));
