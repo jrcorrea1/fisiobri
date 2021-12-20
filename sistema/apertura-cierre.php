@@ -21,18 +21,28 @@ $total_cobros = $caja ? $cobros->total : 0;
 // sumamos todos los movimientos de caja efectivo
 $stmt = $dbconn->query("SELECT SUM(monto) AS total FROM cobros WHERE formacobro='Efectivo' AND id_apertura = $id_caja");
 $cobrose = $stmt->fetch(PDO::FETCH_OBJ);
-$total_efectivo = $caja ? $cobrose->total : 0;
-
+if ($cobrose->total>0) {
+    $total_efectivo = $cobrose->total;
+} else {
+    $total_efectivo = 0;
+}
 // sumamos todos los movimientos de caja tarjeta
 $stmt = $dbconn->query("SELECT SUM(monto) AS total FROM cobros WHERE formacobro='Tarjeta' AND id_apertura = $id_caja");
 $cobrost = $stmt->fetch(PDO::FETCH_OBJ);
-$total_tarjeta = $caja ? $cobrost->total : 0;
+if ($cobrost->total>0) {
+    $total_tarjeta = $cobrost->total;
+} else {
+  $total_tarjeta = 0;
+}
 
 // sumamos todos los movimientos de caja cheque
 $stmt = $dbconn->query("SELECT SUM(monto) AS total FROM cobros WHERE formacobro='Cheque' AND id_apertura = $id_caja");
 $cobrosc = $stmt->fetch(PDO::FETCH_OBJ);
-$total_cheque = $caja ? $cobrosc->total : 0;
-
+if ($cobrosc->total>0) {
+    $total_cheque = $cobrosc->total;
+} else {
+    $total_cheque = 0;
+}
 $total = $caja ? $monto_inicial + $total_cobros : 0;
 
 ?>
@@ -52,10 +62,13 @@ $total = $caja ? $monto_inicial + $total_cobros : 0;
       <div class="float-right">
         <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-datos">
           Abrir Caja
-        </button>
-        <button type="button" onclick="cierre(<?= $id_caja; ?>);" class="btn btn-warning">
-          Cerrar Caja
-        </button>
+        </button> 
+        <?php if ($id_caja>0) { ?>      
+          <button type="button" onclick="cierre(<?= $id_caja; ?>);" class="btn btn-warning">
+            Cerrar Caja
+          </button>
+        <?php } ?>
+       
       </div>
     </div>
     <div class="card-header ui-sortable-handle" style="cursor: move;">

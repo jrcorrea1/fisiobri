@@ -30,10 +30,11 @@
 
 						if ($cli > 0) {
 							while ($dato = mysqli_fetch_array($query)) {
+								$fecha = empty($dato['fecha']) ? null : date("d/m/Y", strtotime($dato['fecha']));								
 						?>
 								<tr>
 									<td><?php echo $dato['nofactura']; ?></td>
-									<td><?php echo $dato['fecha']; ?></td>
+									<td><?php echo $fecha; ?></td>
 									<td><?php echo $dato['codcliente']; ?></td>
 									<td><?php echo $dato['totalfactura']; ?></td>
 
