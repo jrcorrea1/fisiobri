@@ -76,14 +76,60 @@
 
 		</div>
 		<!-- End of Main Content -->
+		<div class="modal fade" id="myModal">
+			<div class="modal-dialog">
+				<form id="form_datos" class="user">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h4 class="modal-title">Editar Barrio</h4>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<div class="row">
+								<div class="col-md-12">
+									<div class="form-group">
+										<label>Barrio</label>
+										<input type="text" class="form-control" id="barrio" name="barrio" readonly>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer justify-content-between">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+							<input type="hidden" name="accion" value="apertura">
+							<button id="guardar" type="submit" class="btn btn-primary">Guardar</button>
+
+						</div>
+						<div id="error" style="display: none"><br>
+							<div class='alert alert-danger' role='alert'>
+								<strong>Error!</strong> <span id="error_message"></span>
+							</div>
+						</div>
+						<div id="success" style="display: none"><br>
+							<div class='alert alert-success' role='alert'>
+								<strong>Éxito!</strong> <span id="success_message"></span>
+							</div>
+						</div>
+					</div>
+				</form>
+				<!-- /.modal-content -->
+			</div>
+			<!-- /.modal-dialog -->
+		</div>
+
+		<!-- End of Main Content -->
 
 
 		<?php include_once "includes/footer.php"; ?>
 		<script type="text/javascript">
 			$(document).ready(function() {
 
-				modificar = function(id) {
-					location.href = './editar_barrio.php?id=' + id;
+				modificar = function(id, barrio) {
+					//location.href = './editar_barrio.php?id=' + id;
+					$('#barrio').val(barrio);					
+					$('#myModal').modal('show');
 				}
 				eliminar = function(id) {
 					Swal.fire({
@@ -153,18 +199,18 @@
 							"data": "estado"
 						} // last
 						<?php if ($_SESSION['rol'] == 1) { ?>
-						// last column of table
-					],
+							// last column of table
+						],
 					"columnDefs": [{
-						"render": function(number_row, type, row) {
-							return '<button onclick="modificar(' + row.id + ');" class="btn btn-success"><i class="fas fa-edit"></i> Editar</button> ' +
-								'<button onclick="eliminar(' + row.id + ');" class="btn btn-danger"><i class="fas fa-trash-alt"></i> </button>';
-						},
-						"orderable": false,
-						"targets": 5 // columna modificar usuario
-					}
+							"render": function(number_row, type, row) {
+								return '<button onclick="modificar(' + row.id + ',\'' + row.barrio + '\');" class="btn btn-success"><i class="fas fa-edit"></i> Editar</button> ' +
+									'<button onclick="eliminar(' + row.id +' );" class="btn btn-danger"><i class="fas fa-trash-alt"></i> </button>';
+							},
+							"orderable": false,
+							"targets": 5 // columna modificar usuario
+						}
 					<?php } ?>
-				],
+					],
 					"language": {
 						"decimal": "",
 						"emptyTable": "No hay registros en la tabla",

@@ -64,11 +64,10 @@ $total = $caja ? $monto_inicial + $total_cobros : 0;
           Abrir Caja
         </button> 
         <?php if ($id_caja>0) { ?>      
-          <button type="button" onclick="cierre(<?= $id_caja; ?>);" class="btn btn-warning">
+          <button type="button" onclick="cierre(<?= $id_caja; ?>);" class="btn btn-danger">
             Cerrar Caja
           </button>
-        <?php } ?>
-       
+        <?php } ?>       
       </div>
     </div>
     <div class="card-header ui-sortable-handle" style="cursor: move;">

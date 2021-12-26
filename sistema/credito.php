@@ -2,18 +2,14 @@
 include('core/config.php');
 $dbconn = getConnection();
 // llamamos al ultimo id de la tabla pedido
-$stmt = $dbconn->query('SELECT IFNULL(MAX(id), 0)+1 AS numero FROM pedido_compra');
+$stmt = $dbconn->query('SELECT IFNULL(MAX(id), 0)+1 AS numero FROM notacredito');
 $pedido = $stmt->fetch(PDO::FETCH_ASSOC);
 
-// select de la tabla proveedor
-$stmt3 = $dbconn->query('SELECT codproveedor, proveedor FROM proveedor');
-$proveedor = $stmt3->fetchAll(PDO::FETCH_ASSOC);
-// select de la tabla sucursal
-$stmt4 = $dbconn->query('SELECT idsucursal, nombre FROM sucursal');
-$sucursales = $stmt4->fetchAll(PDO::FETCH_ASSOC);
 //generamos la fecha y hora actual
 $fechaingreso = date('Y-m-d H:i:s');
-$fecha = date("d/m/Y", strtotime($fechaingreso));
+$fecha = date("d/m/Y", strtotime($fechaingreso))
+
+;
 ?>
 <!-- Begin Page Content -->
 <div class="container">
@@ -28,7 +24,7 @@ $fecha = date("d/m/Y", strtotime($fechaingreso));
             <div class="text-center">
               <h1 class="h4 text-gray-900 mb-3">Nota de Credito</h1>
             </div>
-            <form id="form_pedido" class="user">
+            <form id="form_credito" class="user">
               <div class="card-header py-3">
                 <div class="float-left">
 
@@ -37,7 +33,7 @@ $fecha = date("d/m/Y", strtotime($fechaingreso));
                 <div class="float-right">
 
                   <button class="btn btn-primary" id="cancelar" type="button">Cancelar</button>
-                  <input type="hidden" name="accion" value="insertapedido">
+                  <input type="hidden" name="accion" value="insertacredito">
                   <button class="btn btn-primary" id="guardar" type="submit">Guardar</button>
                 </div>
               </div>
@@ -48,7 +44,7 @@ $fecha = date("d/m/Y", strtotime($fechaingreso));
               <div class="form-group row mb-3">
                 <div class="col-sm-4">
                   <label>Codigo</label>
-                  <input type="text" id="pedido" class="form-control" value="<?= $pedido['numero']; ?>" readonly>
+                  <input type="text" id="credito" class="form-control" value="<?= $pedido['numero']; ?>" readonly>
                 </div>
                 <div class="col-sm-4">
                   <label>Usuario</label>
@@ -67,16 +63,16 @@ $fecha = date("d/m/Y", strtotime($fechaingreso));
               <div class="form-group row mb-3">
                 <div class="col-sm-2">
                   <label>Factura Nº</label>
-                  <input type="text" class="form-control" name="factura" required>
+                  <input type="text" class="form-control" id="factura" name="factura" required>
                 </div>
                 <div class="col-sm-6">
                   <label>Cliente</label>
-                  <input type="text" class="form-control" name="cliente" required>
+                  <input type="text" class="form-control" name="cliente" id="cliente" required>
                 </div>
                 <div class="col-sm-2">
                   <label>Fecha Factura</label>
                   <div class="input-group date datepicker">
-                    <input type="text" class="form-control" name="fechafactura" required>
+                    <input type="text" class="form-control" name="fechafactura" id="fechafactura" required>
                   </div>
                 </div>
                 <div class="col-sm-2">
@@ -93,14 +89,13 @@ $fecha = date("d/m/Y", strtotime($fechaingreso));
                   <label>Motivo</label>
                   <select class="form-control seleccion" name="motivo" id="motivo" required>
                     <option value="">Seleccione</option>
-                    <option value="Anular">Anular Factura</option>
-                    <option value="Devolucion">Devolucion</option>
-                    <option value="Cambio">Cambio</option>                  
+                    <option value="anular">Anular Factura</option>
+                    <option value="devolucion">Devolucion</option>               
                   </select>
                 </div>
                 <div class="col-sm-8">
                   <label>Observacion</label>
-                  <textarea type="text" class="form-control"> </textarea>
+                  <textarea type="text" id="observacion" name="observacion" class="form-control"> </textarea>
                 </div>
                 
               </div>
@@ -119,8 +114,7 @@ $fecha = date("d/m/Y", strtotime($fechaingreso));
                         <th>Marca</th>
                         <th>Cantidad</th>
                         <th><span class="pull-right">PRECIO UNIT.</span></th>
-                        <th><span class="pull-right">PRECIO TOTAL</span></th>
-                        <th>Accion</th>
+                        <th><span class="pull-right">PRECIO TOTAL</span></th>                       
                       </tr>
                     </thead>
                   </table>
@@ -267,7 +261,7 @@ $fecha = date("d/m/Y", strtotime($fechaingreso));
          
           "render": function(number_row, type, row) {
             return '<button class="btn btn-success btn-user" ' +
-              'onclick="insertadetalle(' + row.codproducto + ');"><i class="fa fa-plus"></i></button>';
+              'onclick="insertafactura(' + row.id + ',\'' + row.fecha + '\',\'' + row.cliente + '\');"><i class="fa fa-plus"></i></button>';
           },
           "orderable": false,
           "targets": 4 // columna modificar usuario
@@ -310,70 +304,28 @@ $fecha = date("d/m/Y", strtotime($fechaingreso));
       $("#loading").hide();
     });
 
-    insertadetalle = function(codproducto) {
+    insertafactura = function(id, fecha, cliente) {
       event.preventDefault();
+      $('#factura').val(id);
+      $('#fechafactura').val(fecha);
+      $('#cliente').val(cliente);
+      $('#myModal').modal('hide');
+      table1.ajax.reload();
 
-
-      datos = {
-        "accion": "insertadetalle",
-        "pedido": $('#pedido').val(),
-        "producto": codproducto,
-        "cantidad": $('#cantidad_' + codproducto).val()
-      };
-      console.log(datos);
-
-      $.ajax({
-        url: './backend/pedido.php',
-        method: 'POST',
-        data: datos,
-        success: function(data) {
-          try {
-            response = JSON.parse(data);
-
-            if (response.status == "success") {
-              $('#myModal').modal('hide');
-              table.ajax.reload();
-              table1.ajax.reload();
-
-            } else {
-              Swal.fire({
-                title: 'Advertencia',
-                text: "Ocurrio un error intentado resolver la solicitud. Por favor contacte con el administrador del sistema",
-                icon: 'warning',
-                confirmButtonText: 'Ok'
-              });
-            }
-          } catch (error) {
-            Swal.fire({
-              title: 'Advertencia',
-              text: "Ocurrio un error intentado resolver la solicitud. Por favor contacte con el administrador del sistema",
-              icon: 'warning',
-              confirmButtonText: 'Ok'
-            });
-          }
-        },
-        error: function(data) {
-          Swal.fire({
-            title: 'Advertencia',
-            text: "Ocurrio un error intentado resolver la solicitud. Por favor contacte con el administrador dela red",
-            icon: 'warning',
-            confirmButtonText: 'Ok'
-          });
-        }
-      });
+    
     };
-/*
+
     var table1 = $('#listado').DataTable({
       "processing": true,
       "serverSide": true,
       "ordering": false,
       "searching": false,
       "ajax": {
-        "url": "./backend/listados/detallepedido.php",
+        "url": "./backend/listados/detallecredito.php",
         timeout: 15000,
         error: handleAjaxError,
         "data": function(data) {
-          data.pedido = $('#pedido').val()
+          data.factura = $('#factura').val()
         }
       },
       "columns": [{
@@ -393,19 +345,9 @@ $fecha = date("d/m/Y", strtotime($fechaingreso));
         },
         {
           "data": "total"
-        },
-        {
-          "data": "id"
         } // last column of table
       ],
-      "columnDefs": [{
-        "render": function(number_row, type, row) {
-          return '<button class="btn btn-warning btn-user btn-block" ' +
-            'onclick="eliminar(' + row.id_pedido + ',' + row.codigo + ');">Quitar</button>';
-        },
-        "orderable": false,
-        "targets": 6 // columna modificar usuario
-      }],
+     
       "language": {
         "decimal": "",
         "emptyTable": "No hay registros en la tabla",
@@ -430,60 +372,12 @@ $fecha = date("d/m/Y", strtotime($fechaingreso));
           "sortDescending": ": activar para ordenar la columna descendente"
         }
       }
-    });*/
-
-    eliminar = function(pedido, codigo) {
-      event.preventDefault();
-      datos = {
-        "accion": "eliminadetalle",
-        "pedido": pedido,
-        "producto": codigo
-      };
-      console.log(datos);
-
-      $.ajax({
-        url: './backend/pedido.php',
-        method: 'POST',
-        data: datos,
-        success: function(data) {
-          try {
-            response = JSON.parse(data);
-
-            if (response.status == "success") {
-
-              table1.ajax.reload();
-
-            } else {
-              Swal.fire({
-                title: 'Advertencia',
-                text: "Ocurrio un error intentado resolver la solicitud. Por favor contacte con el administrador del sistema",
-                icon: 'warning',
-                confirmButtonText: 'Ok'
-              });
-            }
-          } catch (error) {
-            Swal.fire({
-              title: 'Advertencia',
-              text: "Ocurrio un error intentado resolver la solicitud. Por favor contacte con el administrador del sistema",
-              icon: 'warning',
-              confirmButtonText: 'Ok'
-            });
-          }
-        },
-        error: function(data) {
-          Swal.fire({
-            title: 'Advertencia',
-            text: "Ocurrio un error intentado resolver la solicitud. Por favor contacte con el administrador dela red",
-            icon: 'warning',
-            confirmButtonText: 'Ok'
-          });
-        }
-      });
-    };
+    });
 
 
 
-    $('#form_pedido').submit(function(e) {
+
+    $('#form_credito').submit(function(e) {
       e.preventDefault();
       $('#success').hide();
       $('#error').hide();
@@ -503,12 +397,12 @@ $fecha = date("d/m/Y", strtotime($fechaingreso));
         });
       } else {
         $('#guardar').attr("disabled", "disabled");
-        const valor = $('#form_pedido').val();
-        console.log($('#form_pedido').val());
+        const valor = $('#form_credito').val();
+        console.log($('#form_credito').val());
         $.ajax({
-          url: './backend/pedido.php',
+          url: './backend/credito.php',
           method: 'POST',
-          data: $('#form_pedido').serialize(),
+          data: $('#form_credito').serialize(),
           success: function(data) {
             try {
               response = JSON.parse(data);
@@ -517,12 +411,12 @@ $fecha = date("d/m/Y", strtotime($fechaingreso));
                 setTimeout(function() {
                   Swal.fire({
                     title: 'Exito',
-                    text: "Pedido guardado con exito",
+                    text: "Nota de Credito guardado con exito",
                     icon: 'success',
                     confirmButtonText: 'Ok'
                   }).then((result) => {
                     if (result.isConfirmed) {
-                      location.href = './pedido_compra.php';
+                      location.href = './credito.php';
                     }
                   });
                 }, 2000);
@@ -571,7 +465,7 @@ $fecha = date("d/m/Y", strtotime($fechaingreso));
       $.ajax({
         url: './backend/pedido.php',
         method: 'POST',
-        data: "accion=cancelarpedido&pedido=" + $('#pedido').val(),
+        data: "accion=cancelarpedido&credito=" + $('#pedido').val(),
         success: function(data) {
           try {
             response = JSON.parse(data);

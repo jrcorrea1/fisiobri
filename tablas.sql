@@ -63,3 +63,19 @@ CREATE TABLE barrio (
                 departamento VARCHAR(100) NULL,
                 PRIMARY KEY (id)
 );
+CREATE TABLE `notacredito` (
+  `id` int(11) DEFAULT NULL,
+  `fecha` varchar(45) DEFAULT NULL,
+  `usuario_id` int(11) DEFAULT NULL,
+  `nofactura` int(11) DEFAULT NULL, 
+  `estado` varchar(45) DEFAULT NULL,
+   `motivo` varchar(80) DEFAULT NULL,
+    `observacion` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4
+
+CREATE TABLE `detalle_nota_credito` (
+  `id_credito` int(11) DEFAULT NULL,
+  `id_producto` int(11) DEFAULT NULL,
+  `cantidad` int(11) DEFAULT NULL
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4

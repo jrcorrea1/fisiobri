@@ -5,6 +5,7 @@
 		header('location: ../');
 	}
 	include "../../conexion.php";
+	
 	if(empty($_REQUEST['cl']) || empty($_REQUEST['f']))
 	{
 		echo "No es posible generar la factura.";
@@ -19,6 +20,8 @@
 		$result_cliente = mysqli_fetch_assoc($clientes);
 		$productos = mysqli_query($conexion, "SELECT d.nofactura, d.codproducto, d.cantidad, p.codproducto, p.descripcion, p.precio FROM detallefactura d INNER JOIN producto p ON d.nofactura = $noFactura WHERE d.codproducto = p.codproducto");
 		require_once 'fpdf/fpdf.php';
+		require_once "../core/CifrasEnLetras.php";
+		
 		$pdf = new FPDF('P', 'mm', array(80, 200));
 		$pdf->AddPage('portrait','a4');
 		$pdf->SetMargins(15, 0, 0);
@@ -89,6 +92,7 @@
 			$importe = number_format($row['cantidad'] * $row['precio'], 2, '.', ',');
 			$pdf->Cell(28, 10, $importe, 1, 1, 'L');
 		}
+		
 		$pdf->SetFont('Arial', 'B', 13);
 		$pdf->Cell(178, 10, 'Monto en letras: ', 1, 1, 'L',1);
 		$pdf->Cell(178, 10, 'Total: ' . number_format($result_venta['totalfactura'], 2, '.', ','), 1, 1, 'R',1);

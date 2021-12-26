@@ -16,6 +16,7 @@ if ($_SESSION['idUser']) {
         $monto = $_POST['monto'];
         $cliente = $_POST['cliente'];
         $apertura = $_POST['apertura'];
+        $fecha = $_POST['fecha'];
         $usuario_id = $_SESSION['idUser'];
         $fechacobro = date("Y-m-d H:i:s");
         $banco =  $forma_cobro == "Cheque" ? $_POST['banco'] : NULL;

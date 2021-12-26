@@ -39,7 +39,7 @@ if ($_SESSION['idUser']) {
   /****** FINISH - FOR PAGINATION ******/
 
   /****** BEGIN - TABLE RECORDS AND FILTERING ******/
-  $sql = "SELECT codproducto, descripcion, precio, marca, categoria  from producto
+  $sql = "SELECT codproducto, descripcion, existencia, precio, marca, categoria  from producto
   WHERE 1=1";
 
   // FILTROS
@@ -73,6 +73,7 @@ if ($_SESSION['idUser']) {
       $row['descripcion'] = $producto['descripcion'];
       $row['precio'] = $producto['precio'];
       $row['marca'] = $producto['marca'];
+      $row['existencia'] = $producto['existencia'];
       $row['categoria'] = $producto['categoria'];
       array_push($data, $row);
     }
