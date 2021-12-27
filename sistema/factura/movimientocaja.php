@@ -6,6 +6,7 @@ if (!isset($_SESSION['idUser'])) {
 	exit();
 }
 require_once 'fpdf/fpdf.php';
+require_once '../core/CifrasEnLetras.php';
 include('../core/config.php');
 $dbconn = getConnection();
 
@@ -34,7 +35,9 @@ $stmt4->execute();
 $configuracion = $stmt4->fetch(PDO::FETCH_ASSOC);
 
 
-
+$v=new CifrasEnLetras(); 
+//Convertimos el total en letras
+$letra=($v->convertirEurosEnLetras($caja['monto_cierre']));
 
 
 $pdf = new FPDF('P', 'mm', array(80, 200));
@@ -94,7 +97,7 @@ $pdf->Cell(30, 10, $caja['monto_cierre'] - $caja['monto_apertura'], 1,1, 'L');
 $pdf->SetFont('Arial', '', 12);
 
 $pdf->SetFont('Arial', 'B', 13);
-$pdf->Cell(180, 10, 'Monto en letras: ', 1, 1, 'L', 1);
+$pdf->Cell(180, 10, 'Monto en letras: '.$letra, 1, 1, 'L', 1);
 $pdf->Cell(180, 10, 'Total: ' . number_format($caja['monto_cierre'], 0, ',', '.'), 1, 1, 'R', 1);
 $pdf->Ln();
 $pdf->SetFont('Arial', '', 15);

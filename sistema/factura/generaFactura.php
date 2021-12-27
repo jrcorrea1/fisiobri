@@ -21,6 +21,9 @@
 		$productos = mysqli_query($conexion, "SELECT d.nofactura, d.codproducto, d.cantidad, p.codproducto, p.descripcion, p.precio FROM detallefactura d INNER JOIN producto p ON d.nofactura = $noFactura WHERE d.codproducto = p.codproducto");
 		require_once 'fpdf/fpdf.php';
 		require_once "../core/CifrasEnLetras.php";
+		$v=new CifrasEnLetras();
+		//Convertimos el total en letras
+		$letra=($v->convertirEurosEnLetras($result_venta['totalfactura']));
 		
 		$pdf = new FPDF('P', 'mm', array(80, 200));
 		$pdf->AddPage('portrait','a4');
@@ -94,12 +97,10 @@
 		}
 		
 		$pdf->SetFont('Arial', 'B', 13);
-		$pdf->Cell(178, 10, 'Monto en letras: ', 1, 1, 'L',1);
+		$pdf->Cell(178, 10, 'Monto en letras: '.$letra, 1, 1, 'L',1);
 		$pdf->Cell(178, 10, 'Total: ' . number_format($result_venta['totalfactura'], 2, '.', ','), 1, 1, 'R',1);
 		$pdf->Ln();
 		$pdf->SetFont('Arial', '', 15);
 		$pdf->Cell(80, 10, utf8_decode("Gracias por su preferencia"), 0, 1, 'C');
 		$pdf->Output("compra.pdf", "I");
 		}
-
-?>

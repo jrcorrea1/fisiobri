@@ -24,7 +24,7 @@ if ($_SESSION['idUser']) {
 
   /****** BEGIN - FOR PAGINATION ******/
   // GET TOTAL
-  $sql_total = "SELECT count(*) as total FROM apertura_cierre WHERE 1=1"; 
+  $sql_total = "SELECT count(*) as total FROM apertura_cierre WHERE 1=1 AND estado=0"; 
 
   //if (!empty($des)) {
  //   $sql_total .= " AND barrio LIKE '%$des%'";
@@ -38,7 +38,8 @@ if ($_SESSION['idUser']) {
   /****** FINISH - FOR PAGINATION ******/
 
   /****** BEGIN - TABLE RECORDS AND FILTERING ******/
-  $sql = "SELECT id_caja, fecha_apertura, monto_apertura, fecha_cierre, monto_cierre, estado, monto_efectivo, monto_tarjeta, monto_cheque FROM apertura_cierre WHERE 1=1";
+  $sql = "SELECT id_caja, fecha_apertura, monto_apertura, fecha_cierre, monto_cierre, estado, monto_efectivo, monto_tarjeta, monto_cheque 
+  FROM apertura_cierre WHERE 1=1 AND estado=0";
 
 
 
