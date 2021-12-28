@@ -32,9 +32,15 @@
   </div>
 </div>
 
+
+
 <!-- Bootstrap core JavaScript-->
 <script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/jquery/jquery-2.2.4.min.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="vendor/moment-v2.24.0/min/moment.min.js"></script>
+<script src="vendor/moment-v2.24.0/locale/es-us.js"></script>
+<script src="vendor/datetimepicker-v4.17.42/bootstrap-datetimepicker.js"></script>
 
 <!-- Core plugin JavaScript-->
 <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
